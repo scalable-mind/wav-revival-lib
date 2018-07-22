@@ -2,3 +2,7 @@
 .vscode/
 cmake*/
 *.iml
+src/test/resources/test-original.wav
+src/test/resources/test-voice.wav
+src/test/resources/pywav.comp.out.txt
+src/test/resources/pywav.smooth.out.txt
