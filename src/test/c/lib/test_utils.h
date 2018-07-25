@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define add_test(test_function) _add_test(#test_function, test_function)
-#define TEST_NAME_MAX_LENGTH 255
+#define TEST_NAME_MAX_LENGTH 256
 
 typedef void (*TestFunction)();
 

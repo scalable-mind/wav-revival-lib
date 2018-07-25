@@ -8,21 +8,21 @@
 
 static void _add_test(const char* name, TestFunction function) {
     _Test test;
-    strncpy(test._name, name, TEST_NAME_MAX_LENGTH);
+    strncpy(test._name, name, TEST_NAME_MAX_LENGTH - 1);
+    test._name[TEST_NAME_MAX_LENGTH - 1] = '\0';
     test._function = function;
 
     if (test_utils()->_tests_queue_size == 0) {
-        test_utils()->_tests_queue = malloc(sizeof (_Test));
+        test_utils()->_tests_queue = calloc(1, sizeof(_Test));
         test_utils()->_tests_queue[0] = test;
+        test_utils()->_tests_queue_size++;
     } else {
-        test_utils()->_tests_queue = realloc(
-            test_utils()->_tests_queue,
-            test_utils()->_tests_queue_size * sizeof (_Test)
-        );
-        test_utils()->_tests_queue[test_utils()->_tests_queue_size] = test;
+        _Test* new_tests_queue = calloc(test_utils()->_tests_queue_size + 1, sizeof (_Test));
+        memcpy(new_tests_queue, test_utils()->_tests_queue, test_utils()->_tests_queue_size * sizeof(_Test));
+        new_tests_queue[test_utils()->_tests_queue_size++] = test;
+        free(test_utils()->_tests_queue);
+        test_utils()->_tests_queue = new_tests_queue;
     }
-
-    test_utils()->_tests_queue_size++;
 }
 
 static void run_tests() {
