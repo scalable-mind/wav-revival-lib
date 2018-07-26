@@ -1,5 +1,5 @@
 #include <api/sample_count_array_api_impl_test.h>
-#include <lib/test_utils.h>
+#include <tiny_test/test_utils.h>
 
 int main(int argc, char* argv[]) {
     ADD_TEST(SampleCountArrayApiImpl__push_back__test_1);

@@ -41,5 +41,3 @@ int main() {
     test_utils()->run_tests();
 }
 ```
-
-Build with `src/test/c/lib/test_utils.c`.

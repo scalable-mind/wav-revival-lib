@@ -4,7 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "./test_utils.h"
+#include <tiny_test/test_utils.h>
 
 static void add_test(const char* name, TestFunction function) {
     _Test test;
