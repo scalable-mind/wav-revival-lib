@@ -6,7 +6,7 @@
 
 #include "./test_utils.h"
 
-static void _add_test(const char* name, TestFunction function) {
+static void add_test(const char* name, TestFunction function) {
     _Test test;
     strncpy(test._name, name, TEST_NAME_MAX_LENGTH - 1);
     test._name[TEST_NAME_MAX_LENGTH - 1] = '\0';
@@ -49,7 +49,7 @@ TestUtils* test_utils() {
     if (!is_initialized) {
         is_initialized = true;
         instance._tests_queue_size = 0;
-        instance._add_test = _add_test;
+        instance.add_test = add_test;
         instance.run_tests = run_tests;
     }
     return &instance;

@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define add_test(test_function) _add_test(#test_function, test_function)
+#define ADD_TEST(test_function) test_utils()->add_test(#test_function, test_function)
 #define TEST_NAME_MAX_LENGTH 256
 
 typedef void (*TestFunction)();
@@ -22,7 +22,7 @@ typedef struct {
 
     size_t _tests_queue_size;
 
-    void (*_add_test)(const char* name, TestFunction function);
+    void (*add_test)(const char* name, TestFunction function);
 
     void (*run_tests)();
 
