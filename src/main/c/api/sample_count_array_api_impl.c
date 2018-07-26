@@ -1,5 +1,6 @@
 #include <stdlib.h>
-
+#include <memory.h>
+#include <stdbool.h>
 #include "./sample_count_array_api.h"
 #include "../domain/sample_count_array.h"
 
@@ -10,6 +11,8 @@ static SampleCountArray* init(size_t capacity) {
     array->capacity = capacity;
     array->data = calloc(capacity, sizeof(size_t));
     array->size = 0;
+
+    return array;
 }
 
 static void del(SampleCountArray* self) {
