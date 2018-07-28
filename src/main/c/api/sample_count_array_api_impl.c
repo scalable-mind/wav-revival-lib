@@ -41,7 +41,7 @@ static void resize(SampleCountArray* self, size_t new_size) {
 
 static void push_back(SampleCountArray* self, size_t val) {
     if (self->size >= self->capacity) {
-        resize(self, CAPACITY_INCREASE_FACTOR * self->capacity);
+        resize(self, (size_t) (CAPACITY_INCREASE_FACTOR * self->capacity));
     }
     self->data[self->size++] = val;
 }
