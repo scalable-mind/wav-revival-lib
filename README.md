@@ -19,8 +19,10 @@ void MyFirstApiImpl__my_first_method__test() {
 }
 ```
 
-To run your tests, use the `TestUtils.add_test` method to add all the test functions you have (need), and then call
-`TestUtils.run_tests`:
+> NOTE: It is highly recommended to free all the resources in your tests before the `assert` statements.
+
+To run your tests, use the `TestUtils.add_test` method (or the `ADD_TEST` macro) to add all the test functions you have
+ need), and then call `TestUtils.run_tests`:
 
 ```c
 #include "./api/my_first_api_impl_test.h"
@@ -28,16 +30,14 @@ To run your tests, use the `TestUtils.add_test` method to add all the test funct
 #include "./lib/test_utils.h"
 
 int main() {
-    test_utils()->add_test(MyFirstApiImpl__my_first_method__test);
-    test_utils()->add_test(MyFirstApiImpl__my_second_method__test);
-    test_utils()->add_test(MyFirstApiImpl__my_third_method__test);
+    test_utils()->add_test("This test does something...", MyFirstApiImpl__my_first_method__test);
+    test_utils()->add_test("We do this and expect that...", MyFirstApiImpl__my_second_method__test);
+    test_utils()->add_test("MyFirstApiImpl.my_third_method", MyFirstApiImpl__my_third_method__test);
 
-    test_utils()->add_test(MySecondApiImpl__my_first_method__test);
-    test_utils()->add_test(MySecondApiImpl__my_second_method__test);
-    test_utils()->add_test(MySecondApiImpl__my_third_method__test);
+    ADD_TEST(MySecondApiImpl__my_first_method__test);
+    ADD_TEST(MySecondApiImpl__my_second_method__test);
+    ADD_TEST(MySecondApiImpl__my_third_method__test);
 
     test_utils()->run_tests();
 }
 ```
-
-Build with `src/test/c/lib/test_utils.c`.
