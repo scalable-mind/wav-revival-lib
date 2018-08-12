@@ -1,12 +1,16 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <stdbool.h>
-#include "./sample_count_array_api.h"
-#include "../domain/sample_count_array.h"
+
+#include <domain/sample_count_array.h>
+#include <api/sample_count_array_api.h>
 
 #define CAPACITY_INCREASE_FACTOR 1.5
 
 static SampleCountArray* init(size_t capacity) {
+    if (capacity < SAMPLE_COUNT_ARRAY_MIN_CAPACITY) {
+        capacity = SAMPLE_COUNT_ARRAY_MIN_CAPACITY;
+    }
     SampleCountArray* array = malloc(sizeof(SampleCountArray));
     array->capacity = capacity;
     array->data = calloc(capacity, sizeof(size_t));
@@ -21,16 +25,23 @@ static void del(SampleCountArray* self) {
 }
 
 static void shrink_to_fit(SampleCountArray* self) {
-    if (self->capacity > self->size) {
-        void* ptr = calloc(self->size, sizeof(size_t));
+    size_t new_capacity = self->size;
+    if (new_capacity < SAMPLE_COUNT_ARRAY_MIN_CAPACITY) {
+        new_capacity = SAMPLE_COUNT_ARRAY_MIN_CAPACITY;
+    }
+    if (self->capacity > new_capacity) {
+        void* ptr = calloc(new_capacity, sizeof(size_t));
         memcpy(ptr, self->data, sizeof(size_t) * self->size);
         free(self->data);
         self->data = ptr;
-        self->capacity = self->size;
+        self->capacity = new_capacity;
     }
 }
 
 static void resize(SampleCountArray* self, size_t new_size) {
+    if (new_size < SAMPLE_COUNT_ARRAY_MIN_CAPACITY) {
+        new_size = SAMPLE_COUNT_ARRAY_MIN_CAPACITY;
+    }
     void* ptr = calloc(new_size, sizeof(size_t));
     memcpy(ptr, self->data, (sizeof(size_t) * (new_size > self->size ? self->size : new_size)));
     free(self->data);
