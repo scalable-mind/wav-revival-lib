@@ -19,10 +19,10 @@ void SampleCountArrayApiImpl__push_back__test_1() {
 }
 
 
-#define EXPECTED_CAPACITY 56
+#define EXPECTED_CAPACITY 64
 void SampleCountArrayApiImpl__shrink_to_fit__test_1() {
     SampleCountArray* sca = sample_count_array_api().init(100);
-    for (int i = 0; i < EXPECTED_CAPACITY; i++) {
+    for (int i = 0; i < EXPECTED_CAPACITY / 2; i++) {
         sample_count_array_api().push_back(sca, 5555);
     }
 
