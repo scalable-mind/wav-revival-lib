@@ -6,6 +6,12 @@
 
 #include <tiny_test/test_utils.h>
 
+static clock_t _run_test(TestFunction test_function) {
+    clock_t start_clock = clock();
+    test_function();
+    return clock() - start_clock;
+}
+
 static void add_test(const char* name, TestFunction function) {
     _Test test;
     strncpy_s(test._name, TEST_NAME_MAX_LENGTH, name, _TRUNCATE);
@@ -25,28 +31,26 @@ static void add_test(const char* name, TestFunction function) {
 }
 
 static void run_tests() {
-    clock_t start_all_clock = clock();
+    clock_t all_tests_time_clocks = 0;
     for (int i = 0; i < test_utils()->_tests_queue_size; i++) {
-        clock_t start_clock = clock();
-        test_utils()->_tests_queue[i]._function();
-        clock_t end_clock = clock();
+        clock_t test_time_clocks = _run_test(test_utils()->_tests_queue[i]._function);
+        all_tests_time_clocks += test_time_clocks;
         printf("SUCCESS: `%s` [%.3lf sec]\n", test_utils()->_tests_queue[i]._name,
-               ((double) end_clock - start_clock) / CLOCKS_PER_SEC);
+               ((double) test_time_clocks) / CLOCKS_PER_SEC);
     }
-    clock_t end_all_clock = clock();
 
     printf("\n%d tests passed [%.3lf sec total]\n", (int) test_utils()->_tests_queue_size,
-           ((double) end_all_clock - start_all_clock) / CLOCKS_PER_SEC);
+           ((double) all_tests_time_clocks) / CLOCKS_PER_SEC);
 
     free(test_utils()->_tests_queue);
+    test_utils()->_tests_queue_size = 0;
 }
 
 TestUtils* test_utils() {
-    static TestUtils instance;
-    static bool is_initialized = false;
+    static TestUtils instance = { ._is_initialized=false };
 
-    if (!is_initialized) {
-        is_initialized = true;
+    if (!instance._is_initialized) {
+        instance._is_initialized = true;
         instance._tests_queue_size = 0;
         instance.add_test = add_test;
         instance.run_tests = run_tests;
