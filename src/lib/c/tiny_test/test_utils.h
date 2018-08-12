@@ -1,6 +1,7 @@
 #ifndef TEST_UTILS_H
 #define TEST_UTILS_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #define ADD_TEST(test_function) test_utils()->add_test(#test_function, test_function)
@@ -17,6 +18,8 @@ typedef struct {
 } _Test;
 
 typedef struct {
+
+    bool _is_initialized;
 
     _Test* _tests_queue;
 
