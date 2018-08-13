@@ -5,6 +5,7 @@
 #include <api/uint64_array_api.h>
 #include <util/wav_compressing_utils.h>
 #include <domain/wav_compressed_data.h>
+#include <domain/uint64_array.h>
 
 static void compress(WavFile* wav_file, WavCompressedData* data, uint16_t threshold) {
     bool start = true;
@@ -35,12 +36,48 @@ static void compress(WavFile* wav_file, WavCompressedData* data, uint16_t thresh
     free(buffer);
 }
 
+void smooth(WavCompressedData* data, size_t silence) {
+    SampleState state = ONE_STATE;
+    Uint64Array* res_arr = uint64_array_api().init(KB_1);
+    size_t sample_smoothed = 0;
+    size_t counter = 1;
+    if (data->start_value == 0) {
+        uint64_array_api().push_back(res_arr, data->compressed_data->data[1]);
+        counter++;
+    }
+    for (; counter < data->compressed_data->size; counter++) {
+        switch (state) {
+            case ZERO_STATE:
+                if (data->compressed_data->data[counter] <= silence) {
+                    sample_smoothed += data->compressed_data->data[counter];
+                } else {
+                    uint64_array_api().push_back(res_arr, sample_smoothed);
+                    uint64_array_api().push_back(res_arr, data->compressed_data->data[counter]);
+                    sample_smoothed = 0;
+                }
+                break;
+            case ONE_STATE:
+                sample_smoothed += data->compressed_data->data[counter];
+                state = ZERO_STATE;
+                break;
+        }
+    }
+
+    if (sample_smoothed != 0) {
+        uint64_array_api().push_back(res_arr, sample_smoothed);
+    }
+    uint64_array_api().del(data->compressed_data);
+
+    data->compressed_data = res_arr;
+}
+
 WavCompressingUtils* wav_compressing_utils() {
     static WavCompressingUtils instance = { ._is_initialized=false };
 
     if (!instance._is_initialized) {
         instance._is_initialized = true;
         instance.compress = compress;
+        instance.smooth = smooth;
     }
     return &instance;
 }

@@ -58,6 +58,12 @@ static void push_back(Uint64Array* self, uint64_t val) {
     self->data[self->size++] = val;
 }
 
+static void push_some(Uint64Array* self, size_t count, uint64_t val) {
+    for (size_t i = 0; i < count; i++) {
+        push_back(self, val);
+    }
+}
+
 static Uint64Iterator begin(Uint64Array* self) {
     return &(self->data[0]);
 }
@@ -75,6 +81,7 @@ Uint64ArrayApi uint64_array_api() {
         instance.init = init;
         instance.del = del;
         instance.push_back = push_back;
+        instance.push_some = push_some;
         instance.shrink_to_fit = shrink_to_fit;
         instance.resize = resize;
         instance.begin = begin;

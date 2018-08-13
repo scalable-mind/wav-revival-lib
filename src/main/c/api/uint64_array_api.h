@@ -15,6 +15,8 @@ typedef struct {
 
     void (*push_back)(Uint64Array* self, uint64_t val);
 
+    void (*push_some)(Uint64Array* self, size_t count, uint64_t val);
+
     Uint64Iterator (*begin)(Uint64Array* self);
 
     Uint64Iterator (*end)(Uint64Array* self);

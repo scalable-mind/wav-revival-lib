@@ -1,14 +1,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
+#include <errno.h>
 
-#include "./wav_file_api.h"
-#include "../domain/wav_file.h"
+#include <api/wav_file_api.h>
+#include <domain/wav_file.h>
 
 static WavFile* init(const char* file_path, FileIoMode file_io_mode, size_t buffer_size) {
     WavFile* wav_file = malloc(sizeof(WavFile));
     wav_file->buffer_size = buffer_size;
     //TODO: file_io_mode validation
     errno_t err = fopen_s(&(wav_file->file), file_path, file_io_mode == READ ? "rb" : "wb");
+    if (err != 0) exit(err);
     //TODO: errno validation
     fread(&(wav_file->header), sizeof(WavHeader), 1, wav_file->file);
     return wav_file;
@@ -29,6 +31,14 @@ static size_t write_next_chunk(WavFile* self, void* buffer) {
     return fwrite(buffer, sample_size, self->buffer_size, self->file);
 }
 
+static size_t write_header(WavFile* self, WavHeader* header) {
+    return fwrite(header, sizeof(WavHeader), 1, self->file);
+}
+
+static void refresh(WavFile* self) {
+    fseek(self->file, 44, SEEK_SET);
+}
+
 WavFileApi wav_file_api() {
     static WavFileApi instance;
     static bool is_initialized = false;
@@ -39,6 +49,8 @@ WavFileApi wav_file_api() {
         instance.del = del;
         instance.read_next_chunk = read_next_chunk;
         instance.write_next_chunk = write_next_chunk;
+        instance.refresh = refresh;
+        instance.write_header = write_header;
     }
     return instance;
 }

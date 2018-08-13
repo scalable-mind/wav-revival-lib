@@ -1,7 +1,7 @@
 #ifndef WAV_FILE_API_H
 #define WAV_FILE_API_H
 
-#include "../domain/wav_file.h"
+#include <domain/wav_file.h>
 
 typedef struct {
 
@@ -12,6 +12,10 @@ typedef struct {
     size_t (*read_next_chunk)(WavFile* self, void* buffer);
 
     size_t (*write_next_chunk)(WavFile* self, void* buffer);
+
+    void (*refresh)(WavFile* self);
+
+    size_t (*write_header)(WavFile* self, WavHeader* header);
 
 } WavFileApi;
 

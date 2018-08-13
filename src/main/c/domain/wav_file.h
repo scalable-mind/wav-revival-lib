@@ -3,7 +3,11 @@
 
 #include <stdio.h>
 
-#include "./wav_header.h"
+#include <domain/wav_header.h>
+
+#define KB_1 1024
+#define MB_1 KB_1*1024
+#define GB_1 MB_1*1024
 
 typedef enum {
 
