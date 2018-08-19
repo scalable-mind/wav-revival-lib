@@ -37,12 +37,13 @@ static void compress(WavFile* wav_file, WavCompressedData* data, uint16_t thresh
 }
 
 void smooth(WavCompressedData* data, size_t silence) {
-    SampleState state = ONE_STATE;
+//    SampleState state = ONE_STATE;
+    SampleState state = data->start_value == 0 ? ZERO_STATE : ONE_STATE;
     Uint64Array* res_arr = uint64_array_api().init(KB_1);
     size_t sample_smoothed = 0;
-    size_t counter = 1;
-    if (data->start_value == 0) {
-        uint64_array_api().push_back(res_arr, data->compressed_data->data[1]);
+    size_t counter = 0;
+    if (state == ZERO_STATE) {
+        uint64_array_api().push_back(res_arr, data->compressed_data->data[0]);
         counter++;
     }
     for (; counter < data->compressed_data->size; counter++) {

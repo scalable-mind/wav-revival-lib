@@ -32,7 +32,7 @@ static void fade_expand(DoubleArray* dst, size_t cross_index, size_t fade_start_
                         double ratio, SignalFadingState flag, bool has_cross) {
     switch(flag) {
         case FADE_NORMAL:
-            if(has_cross) {
+            if(!has_cross) {
                 fade_out(dst, 0, fade_out_len, fade_out_len, ratio);
                 double_array_api().push_some(dst, (zero_count - (fade_in_len + fade_out_len)), 0);
                 fade_in(dst, 0, fade_in_len, fade_in_len, ratio);
@@ -46,8 +46,13 @@ static void fade_expand(DoubleArray* dst, size_t cross_index, size_t fade_start_
             fade_in(dst, 0, fade_in_len, fade_in_len, ratio);
             break;
         case FADE_END:
-            fade_out(dst, 0, fade_out_len, fade_out_len, ratio);
-            double_array_api().push_some(dst, (zero_count - fade_out_len), 0);
+            if (fade_out_len > zero_count) {
+                fade_out(dst, 0, zero_count, fade_out_len, ratio);
+            } else {
+                fade_out(dst, 0, fade_out_len, fade_out_len, ratio);
+                double_array_api().push_some(dst, (zero_count - fade_out_len), 0);
+            }
+            break;
         default:
             exit(1);
     }

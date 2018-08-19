@@ -7,12 +7,14 @@
 
 static WavFile* init(const char* file_path, FileIoMode file_io_mode, size_t buffer_size) {
     WavFile* wav_file = malloc(sizeof(WavFile));
-    wav_file->buffer_size = buffer_size;
     //TODO: file_io_mode validation
     errno_t err = fopen_s(&(wav_file->file), file_path, file_io_mode == READ ? "rb" : "wb");
     if (err != 0) exit(err);
     //TODO: errno validation
-    fread(&(wav_file->header), sizeof(WavHeader), 1, wav_file->file);
+    if (file_io_mode == READ) {
+        fread(&(wav_file->header), sizeof(WavHeader), 1, wav_file->file);
+        wav_file->buffer_size = buffer_size * wav_file->header.num_channels;
+    }
     return wav_file;
 }
 
@@ -36,7 +38,7 @@ static size_t write_header(WavFile* self, WavHeader* header) {
 }
 
 static void refresh(WavFile* self) {
-    fseek(self->file, 44, SEEK_SET);
+    fseek(self->file, sizeof(WavHeader), SEEK_SET);
 }
 
 WavFileApi wav_file_api() {
