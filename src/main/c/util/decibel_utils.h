@@ -21,6 +21,8 @@ typedef struct {
 
     int16_t (*to_val)(double v);
 
+    double (*coefficient)(double v);
+
     bool (*greater)(int16_t src, double threshold);
 
 } DecibelUtils;

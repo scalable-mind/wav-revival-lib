@@ -27,6 +27,10 @@ static int16_t to_val(double v) {
     return (int16_t) (thr * pow(10, 0.05 * v));
 }
 
+static double coefficient(double v) {
+    return pow(10, 0.05 * v);
+}
+
 static bool greater(int16_t src, double threshold) {
     return ratio(src) > threshold;
 }
@@ -40,6 +44,7 @@ DecibelUtils* decibel_utils() {
         instance.greater = greater;
         instance.ratio = ratio;
         instance.to_val = to_val;
+        instance.coefficient = coefficient;
     }
 
     return &instance;

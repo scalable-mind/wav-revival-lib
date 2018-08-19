@@ -14,6 +14,8 @@ static WavFile* init(const char* file_path, FileIoMode file_io_mode, size_t buff
     if (file_io_mode == READ) {
         fread(&(wav_file->header), sizeof(WavHeader), 1, wav_file->file);
         wav_file->buffer_size = buffer_size * wav_file->header.num_channels;
+    } else {
+        wav_file->buffer_size = buffer_size;
     }
     return wav_file;
 }
