@@ -17,7 +17,9 @@
 
 void OverVoice(const char* voice, const char* back, const char* out,
                double attack, double release, double silence, double threshold, double ratio) {
-    silence = silence < attack + release ? attack + release : silence;
+    if (silence < attack + release) {
+        silence =  attack + release;
+    }
     WavFile* fvoice = wav_file_api().init(voice, READ, MB_1);
     WavFile* fback = wav_file_api().init(back, READ, MB_1);
     WavFile* fout = wav_file_api().init(out, WRITE, fback->buffer_size);
@@ -80,28 +82,18 @@ void OverVoice(const char* voice, const char* back, const char* out,
 
     DoubleArray* coefficients = double_array_api().init(fvoice->header.data_size / fvoice->header.block_align);
 
-    size_t cross_index;
-    size_t fade_start_index;
-
     size_t current_value = (size_t) data.start_value;
     size_t start = 0;
 
     size_t fade_in_len = (size_t) (attack * fvoice->header.sample_rate);
     size_t fade_out_len = (size_t) (release * fvoice->header.sample_rate);
 
-    bool has_cross;
-
     SignalFadingState flag;
 
     if (current_value == 0) {
         flag = FADE_START;
-        has_cross = signal_fading_utils()->crossfade(&cross_index, &fade_start_index, fade_in_len, fade_out_len,
-                                                     data.compressed_data->data[0]);
-
-        signal_fading_utils()->fade_expand(coefficients, cross_index, fade_start_index,
-                                           (size_t) (attack * fvoice->header.sample_rate),
-                                           (size_t) (release * fvoice->header.sample_rate),
-                                           data.compressed_data->data[0], ratio, flag, has_cross);
+        signal_fading_utils()->fade_expand(coefficients, fade_in_len, fade_out_len,
+                                           data.compressed_data->data[0], ratio, flag);
         double_array_api().push_some(coefficients, data.compressed_data->data[1],
                                      decibel_utils()->coefficient(-fabs(ratio)));
         start = 2;
@@ -116,12 +108,8 @@ void OverVoice(const char* voice, const char* back, const char* out,
             flag = FADE_END;
         }
         if (current_value == 0) {
-            has_cross = signal_fading_utils()->crossfade(&cross_index, &fade_start_index, fade_in_len, fade_out_len,
-                                                         data.compressed_data->data[i]);
-            signal_fading_utils()->fade_expand(coefficients, cross_index, fade_start_index,
-                                               (size_t) (attack * fvoice->header.sample_rate),
-                                               (size_t) (release * fvoice->header.sample_rate),
-                                               data.compressed_data->data[i], ratio, flag, has_cross);
+            signal_fading_utils()->fade_expand(coefficients, fade_in_len, fade_out_len,
+                                               data.compressed_data->data[i], ratio, flag);
         } else {
             double_array_api().push_some(coefficients, data.compressed_data->data[i],
                                          decibel_utils()->coefficient(-fabs(ratio)));
@@ -147,8 +135,9 @@ void OverVoice(const char* voice, const char* back, const char* out,
             }
             out_buffer[i * 2] = (int16_t) ((i < voice_buffer_size ? voice_buffer[i] : 0) +
                                            back_buffer[i * 2] * *iterator);
-            out_buffer[i * 2 + 1] = (int16_t) ((i < voice_buffer_size ? voice_buffer[i] : 0) +
-                                               back_buffer[i * 2 + 1] * *iterator);
+            out_buffer[i * 2 + 1] = (int16_t) (
+                    (i < voice_buffer_size ? voice_buffer[i] : 0) +
+                                        back_buffer[i * 2 + 1] * *iterator);
             iterator++;
         }
         printf("chunk: %llu, written: %llu, actual: %llu;\n", ++chunk_count,
