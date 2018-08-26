@@ -12,7 +12,7 @@ static double threshold(BitDepth d) {
             return 8388607.0;
         case BIT_32:
             return 1.0;
-        default:
+        default: // ERROR
             return -1.0;
     }
 }
