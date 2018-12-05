@@ -6,25 +6,23 @@
 
 int main(int argc, char* argv[]) {
     // DecibelUtils Tests
-    ADD_TEST(DecibelUtils__threshold_test_1);
-    ADD_TEST(DecibelUtils__ratio_test_1);
-    ADD_TEST(DecibelUtils__to_val_test_1);
-    ADD_TEST(DecibelUtils__coefficient_test_1);
-    ADD_TEST(DecibelUtils__greater_test_1);
+    ADD_TEST(DecibelUtils__get_spl__test_1);
+    ADD_TEST(DecibelUtils__spl_to_pascal__test_1);
+    ADD_TEST(DecibelUtils__spl_to_ratio__test_1);
 
     // DoubleArrayApiImpl Tests
     ADD_TEST(DoubleArrayApiImpl__push_back__test_1);
     ADD_TEST(DoubleArrayApiImpl__shrink_to_fit__test_1);
     ADD_TEST(DoubleArrayApiImpl__shrink_to_fit__test_2);
     ADD_TEST(DoubleArrayApiImpl__push_back__test_2);
-    ADD_TEST(DoubleArrayApiImpl__push_some__test_3);
+    ADD_TEST(DoubleArrayApiImpl__push_some__test_1);
     ADD_TEST(DoubleArrayApiImpl__end__test_1);
 
     // SignalFadingUtils Tests
-    ADD_TEST(SignalFadingUtils__fade_in_test_1);
-    ADD_TEST(SignalFadingUtils__fade_out_test_1);
-    ADD_TEST(SignalFadingUtils__fade_expand_test_1);
-    ADD_TEST(SignalFadingUtils__fade_expand_test_2);
+    ADD_TEST(SignalFadingUtils__fade_in__test_1);
+    ADD_TEST(SignalFadingUtils__fade_out__test_1);
+    ADD_TEST(SignalFadingUtils__fade_expand__test_1);
+    ADD_TEST(SignalFadingUtils__fade_expand__test_2);
 
     // Uint64ArrayApiImpl Tests
     ADD_TEST(Uint64ArrayApiImpl__push_back__test_1);

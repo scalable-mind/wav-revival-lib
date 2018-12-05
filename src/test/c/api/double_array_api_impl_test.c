@@ -35,6 +35,7 @@ void DoubleArrayApiImpl__shrink_to_fit__test_1() {
 }
 #undef EXPECTED_CAPACITY
 
+
 #define EXPECTED_CAPACITY 64
 void DoubleArrayApiImpl__shrink_to_fit__test_2() {
     DoubleArray* arr = double_array_api()->init(1000);
@@ -68,8 +69,9 @@ void DoubleArrayApiImpl__push_back__test_2() {
 }
 #undef CAPACITY_AT_START
 
+
 #define EXPECTED_SIZE 10000000
-void DoubleArrayApiImpl__push_some__test_3() {
+void DoubleArrayApiImpl__push_some__test_1() {
     DoubleArray* arr = double_array_api()->init(0);
 
     double_array_api()->push_some(arr, EXPECTED_SIZE, 3.14);

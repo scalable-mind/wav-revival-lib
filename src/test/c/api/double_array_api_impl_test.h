@@ -21,7 +21,7 @@ void DoubleArrayApiImpl__push_back__test_2();
 /*
  * Checks if the size has been increased after pushing n elements.
  */
-void DoubleArrayApiImpl__push_some__test_3();
+void DoubleArrayApiImpl__push_some__test_1();
 
 /*
  * Checks if `end` always points to the last element + 1 position.

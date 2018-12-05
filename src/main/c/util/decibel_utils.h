@@ -4,26 +4,19 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef enum {
-    BIT_8 = 1,
-    BIT_16,
-    BIT_24,
-    BIT_32
-} BitDepth;
+typedef int16_t Pascal;
+
+typedef double Decibel;
 
 typedef struct {
 
     bool _is_initialized;
 
-    double (*threshold)(BitDepth d);
+    Decibel (*get_spl)(Pascal gain);
 
-    double (*ratio)(int16_t v);
+    Pascal (*spl_to_pascal)(Decibel gain);
 
-    int16_t (*to_val)(double v);
-
-    double (*coefficient)(double v);
-
-    bool (*greater)(int16_t src, double threshold);
+    double (*spl_to_ratio)(Decibel gain);
 
 } DecibelUtils;
 

@@ -2,37 +2,22 @@
 
 #include <util/decibel_utils.h>
 
-static double threshold(BitDepth d) {
-    switch (d) {
-        case BIT_8:
-            return 127.0;
-        case BIT_16:
-            return 32767.0;
-        case BIT_24:
-            return 8388607.0;
-        case BIT_32:
-            return 1.0;
-        default: // ERROR
-            return -1.0;
-    }
+/*
+ * PCM WAVE 16 Bit INT positive quantization limit.
+ * NOTE: using "double" for more precise calculations.
+ */
+static const double QUANT_LIM = INT16_MAX;
+
+static Decibel get_spl(Pascal val) {
+    return 20 * log10(val / (val < 0 ? -QUANT_LIM - 1 : QUANT_LIM));
 }
 
-static double ratio(int16_t v) {
-    double tmp = threshold((BitDepth)sizeof(int16_t));
-    return 20 * log10(v / (v < 0 ? -tmp - 1 : tmp));
+static Pascal spl_to_pascal(Decibel gain) {
+    return (Pascal) (QUANT_LIM * pow(10, 0.05 * gain));
 }
 
-static int16_t to_val(double v) {
-    double thr = threshold((BitDepth)sizeof(int16_t));
-    return (int16_t) (thr * pow(10, 0.05 * v));
-}
-
-static double coefficient(double v) {
-    return pow(10, 0.05 * v);
-}
-
-static bool greater(int16_t src, double threshold) {
-    return ratio(src) > threshold;
+static double spl_to_ratio(Decibel gain) {
+    return pow(10, 0.05 * gain);
 }
 
 DecibelUtils* decibel_utils() {
@@ -40,11 +25,9 @@ DecibelUtils* decibel_utils() {
 
     if(!instance._is_initialized) {
         instance._is_initialized = true;
-        instance.threshold = threshold;
-        instance.greater = greater;
-        instance.ratio = ratio;
-        instance.to_val = to_val;
-        instance.coefficient = coefficient;
+        instance.get_spl = get_spl;
+        instance.spl_to_pascal = spl_to_pascal;
+        instance.spl_to_ratio = spl_to_ratio;
     }
 
     return &instance;
