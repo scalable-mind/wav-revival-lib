@@ -9,6 +9,6 @@ typedef struct {
 
     Uint64Array* compressed_data;
 
-} WavCompressedData;
+} CompressedData;
 
 #endif

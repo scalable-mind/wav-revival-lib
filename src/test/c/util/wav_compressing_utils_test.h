@@ -1,0 +1,12 @@
+#ifndef WAV_COMPRESSING_UTILS_H
+#define WAV_COMPRESSING_UTILS_H
+
+void WavCompressingUtils__compress_int16_array__test_1();
+
+void WavCompressingUtils__compress_smooth_int16_array__test_1();
+
+void WavCompressingUtils__compress_smooth_int16_array__test_2();
+
+void WavCompressingUtils__compress_smooth_int16_array__test_3();
+
+#endif
