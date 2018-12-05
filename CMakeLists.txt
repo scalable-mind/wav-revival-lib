@@ -12,6 +12,7 @@ set(TARGET_TEST src/test/c/test_runner.c)
 aux_source_directory(src/main/c/api/ API_SOURCES)
 aux_source_directory(src/main/c/util/ UTIL_SOURCES)
 aux_source_directory(src/test/c/api/ API_TEST_SOURCES)
+aux_source_directory(src/test/c/util/ UTIL_TEST_SOURCES)
 aux_source_directory(src/lib/c/tiny_test/ TINY_TEST_SOURCES)
 
-add_executable(tests ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} ${TINY_TEST_SOURCES} ${TARGET_TEST})
+add_executable(tests ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES} ${TINY_TEST_SOURCES} ${TARGET_TEST})
