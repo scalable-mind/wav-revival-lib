@@ -22,7 +22,7 @@ void WavCompressingUtils__compress_int16_array__test_1() {
     wav_compressing_utils()->compress_int16_array(arr1, 5, true, 100, &prev_val, &last_count, &actual_data);
     wav_compressing_utils()->compress_int16_array(arr2, 5, false, 100, &prev_val, &last_count, &actual_data);
 
-    if(last_count != 0) {
+    if (last_count != 0) {
         uint64_array_api().push_back(actual_data.compressed_data, last_count);
     }
 
@@ -67,11 +67,11 @@ void WavCompressingUtils__compress_smooth_int16_array__test_1() {
 
     size_t last = 0;
 
-    for(int i = 0; i < 12; i++) {
+    for (int i = 0; i < 12; i++) {
         wav_compressing_utils()->compress_smooth_int16_array(arr[i], 10, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
     }
 
-    if(last > 0) {
+    if (last > 0) {
         if (fill) {
             *(uint64_array_api().end(cdata.compressed_data) - 1) += last;
         } else {
@@ -81,12 +81,12 @@ void WavCompressingUtils__compress_smooth_int16_array__test_1() {
 
     bool success = true;
 
-    if(cdata.compressed_data->size != 6) {
+    if (cdata.compressed_data->size != 6) {
         uint64_array_api().del(cdata.compressed_data);
         assert(false);
     }
 
-    for(size_t i = 0; i < cdata.compressed_data->size; i++) {
+    for (size_t i = 0; i < cdata.compressed_data->size; i++) {
         success = success && (cdata.compressed_data->data[i] == expected[i]);
     }
 
@@ -120,11 +120,11 @@ void WavCompressingUtils__compress_smooth_int16_array__test_2() {
 
     size_t last = 0;
 
-    for(int i = 0; i < 12; i++) {
+    for (int i = 0; i < 12; i++) {
         wav_compressing_utils()->compress_smooth_int16_array(arr[i], 10, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
     }
 
-    if(last > 0) {
+    if (last > 0) {
         if (fill) {
             *(uint64_array_api().end(cdata.compressed_data) - 1) += last;
         } else {
@@ -134,12 +134,12 @@ void WavCompressingUtils__compress_smooth_int16_array__test_2() {
 
     bool success = true;
 
-    if(cdata.compressed_data->size != 8) {
+    if (cdata.compressed_data->size != 8) {
         uint64_array_api().del(cdata.compressed_data);
         assert(false);
     }
 
-    for(size_t i = 0; i < cdata.compressed_data->size; i++) {
+    for (size_t i = 0; i < cdata.compressed_data->size; i++) {
         success = success && (cdata.compressed_data->data[i] == expected[i]);
     }
 
@@ -167,11 +167,11 @@ void WavCompressingUtils__compress_smooth_int16_array__test_3() {
 
     size_t last = 0;
 
-    for(int i = 0; i < 24; i++) {
+    for (int i = 0; i < 24; i++) {
         wav_compressing_utils()->compress_smooth_int16_array(arr[i], 5, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
     }
 
-    if(last > 0) {
+    if (last > 0) {
         if (fill) {
             *(uint64_array_api().end(cdata.compressed_data) - 1) += last;
         } else {
@@ -181,12 +181,12 @@ void WavCompressingUtils__compress_smooth_int16_array__test_3() {
 
     bool success = true;
 
-    if(cdata.compressed_data->size != 9) {
+    if (cdata.compressed_data->size != 9) {
         uint64_array_api().del(cdata.compressed_data);
         assert(false);
     }
 
-    for(size_t i = 0; i < cdata.compressed_data->size; i++) {
+    for (size_t i = 0; i < cdata.compressed_data->size; i++) {
         success = success && (cdata.compressed_data->data[i] == expected[i]);
     }
 
