@@ -4,7 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef int16_t Pascal;
+/** RSP is Raw Sound Pressure, a digital signal representation of sound pressure in pascal (Pa). */
+typedef int16_t Rsp;
 
 typedef double Decibel;
 
@@ -12,9 +13,9 @@ typedef struct {
 
     bool _is_initialized;
 
-    Decibel (*get_spl)(Pascal gain);
+    Decibel (*get_spl)(Rsp gain);
 
-    Pascal (*spl_to_pascal)(Decibel gain);
+    Rsp (*spl_to_rsp)(Decibel gain);
 
     double (*spl_to_ratio)(Decibel gain);
 

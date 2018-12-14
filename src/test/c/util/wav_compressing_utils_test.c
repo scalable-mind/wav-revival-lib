@@ -15,7 +15,7 @@ void WavCompressingUtils__compress_int16_array__test_1() {
 
     bool success = true;
 
-    int8_t prev_val = -1;
+    Stfv prev_val = STFV_INIT;
 
     size_t last_count = 0;
 
@@ -63,7 +63,7 @@ void WavCompressingUtils__compress_smooth_int16_array__test_1() {
 
     bool fill = false;
 
-    int8_t prev = -1;
+    Stfv prev = STFV_INIT;
 
     size_t last = 0;
 
@@ -116,7 +116,7 @@ void WavCompressingUtils__compress_smooth_int16_array__test_2() {
 
     bool fill = false;
 
-    int8_t prev = -1;
+    Stfv prev = STFV_INIT;
 
     size_t last = 0;
 
@@ -163,7 +163,7 @@ void WavCompressingUtils__compress_smooth_int16_array__test_3() {
 
     bool fill = false;
 
-    int8_t prev = -1;
+    Stfv prev = STFV_INIT;
 
     size_t last = 0;
 

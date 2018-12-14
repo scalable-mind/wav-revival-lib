@@ -8,8 +8,11 @@
 #include <domain/compressed_data.h>
 #include <domain/uint64_array.h>
 
-static void compress_int16_array(int16_t data[], size_t data_size, bool start_chunk,
-                                 int16_t threshold, int8_t* prev_val, size_t* samples_count, CompressedData* dst) {
+/**
+ * [DEPRECATED]
+ */
+static void compress_int16_array(Rsp* data, size_t data_size, bool start_chunk,
+                                 Rsp threshold, Stfv* filtered_value, size_t* samples_count, CompressedData* dst) {
     int8_t norm_val;
 
     for (size_t i = 0; i < data_size; i++) {
@@ -18,47 +21,104 @@ static void compress_int16_array(int16_t data[], size_t data_size, bool start_ch
         if (start_chunk) {
             dst->start_value = norm_val;
             start_chunk = false;
-        } else if (*prev_val != norm_val) {
+        } else if (*filtered_value != norm_val) {
             uint64_array_api().push_back(dst->compressed_data, *samples_count);
             *samples_count = 0;
         }
 
         (*samples_count)++;
-        *prev_val = norm_val;
+        *filtered_value = norm_val;
     }
 
     uint64_array_api().shrink_to_fit(dst->compressed_data);
 }
 
-static void compress_smooth_int16_array(int16_t data[], size_t data_size, bool start_chunk, bool* fill_ones,
-                                        int16_t threshold, size_t silence, int8_t* prev_val,
-                                        size_t* samples_count, CompressedData* dst) {
-    int8_t norm_val;
+/**
+ * @param value
+ * @param threshold
+ * @return Silence-filtered Value (STFV_ABOVE or STFV_BELOW)
+ */
+static inline Stfv filter_signal(Rsp value, Rsp threshold) {
+    return (abs(value) > threshold ? STFV_ABOVE : STFV_BELOW);
+}
 
-    for (size_t i = 0; i < data_size; i++) {
-        norm_val = (int8_t) (abs(data[i]) > threshold ? 1 : 0);
+/**
+ * @param smooth_region_end - explained below
+ * @param silence - the length (number of WAV samples) of silence allowed.
+ * @param filtered_value - indicates whether the WAV sample has exceeded the silence level threshold or not.
+ * @param samples_count - the length of consecutive silence or non-silence WAV samples.
+ * @param dst - a storage of compressed values.
+ *
+ * Smoothing is the part of compression algorithm. Here we compare the length of silence region (a) with allowed length
+ * of silence (b). Let's name any of non-silence regions as (ci).
+ * Therefore, there are 2 types of smooth region:
+ *
+ * 1. Non-smooth - if (a) > (b), the region consists of exactly one element - (a). In this state, (a) is just pushed
+ *    back to the resulting array, and the `smooth_region_end` is set to false;
+ *
+ * 2. Smooth - if (a) <= (b), the region consists of 3 elements with the following pattern: [(c1), (a), (c2)]. In
+ *    this state, resulting array contains the sum of these: (c1) + (a) + (c2).
+ *
+ * The algorithm defines the type of a smooth region only when stopped calculating the (a). At this moment,
+ * the last element of resulting array is (c1); (a) is contained in `samples_count`, and (c2) is not yet calculated.
+ * The compressing algorithm calls this function, where we choose the type of smooth region.
+ *
+ * Let's break down the situation where the 2-nd type smooth region appears:
+ * <pre>
+ * | # | dst[size - 1] | filtered_value  | smooth_region_end | samples_count |<br>
+ * |---|---------------|-----------------|-------------------|---------------|<br>
+ * | 1 | (c1)          | STFV_BELOW      | false             | (a)           |<br>
+ * | 2 | (a)           | STFV_ABOVE      | true              | (c2)          |<br>
+ * | 3 | (c2)          | STFV_BELOW      | false             | ...           |<br>
+ * </pre>
+ *
+ * At the step 1, we hit condition `filtered_value == STF_BELOW && samples_count <= silence` (with respect to the
+ * size check of `dst`), add up `dst[size - 1]` and (a) and invert `smooth_region_end` to true.
+ * At the step 2, we hit condition `filtered_value == STF_ABOVE && *smooth_region_end`, add up `dst[size - 1]` and (c2)
+ * and, finally, invert `smooth_region_end` back to false.
+ * The step 3 and further may continue the same pattern as the steps (1 - 2) that represent the 2-nd type of smooth
+ * region, or may lead to the 1-st type, which is simpler to understand.
+ */
+static void process_smooth_region(bool* smooth_region_end, size_t silence, Stfv filtered_value, size_t samples_count,
+                                  CompressedData* dst) {
+    if (
+            (filtered_value == STFV_ABOVE && *smooth_region_end) ||
+            (filtered_value == STFV_BELOW && samples_count <= silence && dst->compressed_data->size > 0)
+    ) {
+        *(uint64_array_api().end(dst->compressed_data) - 1) += samples_count;
+        *smooth_region_end = !(*smooth_region_end);
+    } else {
+        uint64_array_api().push_back(dst->compressed_data, samples_count);
+    }
+}
 
-        if (start_chunk) {
-            dst->start_value = norm_val;
-            start_chunk = false;
-        } else if (*prev_val != norm_val) {
-            if ((*prev_val == 1 && *fill_ones) ||
-                (*prev_val == 0 && *samples_count <= silence
-                 && dst->compressed_data->size > 0)) {
-                *(uint64_array_api().end(dst->compressed_data) - 1) += *samples_count;
-                *fill_ones = !(*fill_ones);
-            } else {
-                uint64_array_api().push_back(dst->compressed_data, *samples_count);
-            }
+static void compress_smooth_rsp_chunk(Rsp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
+                                      Rsp threshold, size_t silence, Stfv* filtered_value,
+                                      size_t* samples_count, CompressedData* dst) {
+    Stfv next_filtered_value;
 
+    size_t i = 0;
+
+    if (data_size > 0 && start_chunk) {
+        dst->start_value = filter_signal(data[0], threshold);
+        (*samples_count)++;
+        *filtered_value = dst->start_value;
+        i++;
+    }
+
+    for (; i < data_size; i++) {
+        next_filtered_value = filter_signal(data[i], threshold);
+
+        if (*filtered_value != next_filtered_value) {
+            process_smooth_region(smooth_region_end, silence, *filtered_value, *samples_count, dst);
             *samples_count = 0;
         }
 
         (*samples_count)++;
-        *prev_val = norm_val;
+        *filtered_value = next_filtered_value;
     }
 
-    uint64_array_api().shrink_to_fit(dst->compressed_data);
+//    uint64_array_api().shrink_to_fit(dst->compressed_data);
 }
 
 WavCompressingUtils* wav_compressing_utils() {
@@ -67,7 +127,7 @@ WavCompressingUtils* wav_compressing_utils() {
     if (!instance._is_initialized) {
         instance._is_initialized = true;
         instance.compress_int16_array = compress_int16_array;
-        instance.compress_smooth_int16_array = compress_smooth_int16_array;
+        instance.compress_smooth_int16_array = compress_smooth_rsp_chunk;
     }
     return &instance;
 }
