@@ -9,31 +9,6 @@
 #include <domain/uint64_array.h>
 
 /**
- * [DEPRECATED]
- */
-static void compress_int16_array(Rsp* data, size_t data_size, bool start_chunk,
-                                 Rsp threshold, Stfv* filtered_value, size_t* samples_count, CompressedData* dst) {
-    int8_t norm_val;
-
-    for (size_t i = 0; i < data_size; i++) {
-        norm_val = (int8_t) (abs(data[i]) > threshold ? 1 : 0);
-
-        if (start_chunk) {
-            dst->start_value = norm_val;
-            start_chunk = false;
-        } else if (*filtered_value != norm_val) {
-            uint64_array_api().push_back(dst->compressed_data, *samples_count);
-            *samples_count = 0;
-        }
-
-        (*samples_count)++;
-        *filtered_value = norm_val;
-    }
-
-    uint64_array_api().shrink_to_fit(dst->compressed_data);
-}
-
-/**
  * @param value
  * @param threshold
  * @return Silence-filtered Value (STFV_ABOVE or STFV_BELOW)
@@ -117,8 +92,6 @@ static void compress_smooth_rsp_chunk(Rsp* data, size_t data_size, bool start_ch
         (*samples_count)++;
         *filtered_value = next_filtered_value;
     }
-
-//    uint64_array_api().shrink_to_fit(dst->compressed_data);
 }
 
 WavCompressingUtils* wav_compressing_utils() {
@@ -126,8 +99,7 @@ WavCompressingUtils* wav_compressing_utils() {
 
     if (!instance._is_initialized) {
         instance._is_initialized = true;
-        instance.compress_int16_array = compress_int16_array;
-        instance.compress_smooth_int16_array = compress_smooth_rsp_chunk;
+        instance.compress_smooth_rsp_chunk = compress_smooth_rsp_chunk;
     }
     return &instance;
 }

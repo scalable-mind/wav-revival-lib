@@ -26,10 +26,9 @@ int main(int argc, char* argv[]) {
     ADD_TEST(SignalFadingUtils__fade_expand__test_2);
 
     // WavCompressingUtils Tests
-    ADD_TEST(WavCompressingUtils__compress_int16_array__test_1);
-    ADD_TEST(WavCompressingUtils__compress_smooth_int16_array__test_1);
-    ADD_TEST(WavCompressingUtils__compress_smooth_int16_array__test_2);
-    ADD_TEST(WavCompressingUtils__compress_smooth_int16_array__test_3);
+    ADD_TEST(WavCompressingUtils__compress_smooth_rsp_chunk__test_1);
+    ADD_TEST(WavCompressingUtils__compress_smooth_rsp_chunk__test_2);
+    ADD_TEST(WavCompressingUtils__compress_smooth_rsp_chunk__test_3);
 
     // Uint64ArrayApiImpl Tests
     ADD_TEST(Uint64ArrayApiImpl__push_back__test_1);
