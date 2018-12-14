@@ -8,12 +8,12 @@
  */
 static const double QUANT_LIM = INT16_MAX;
 
-static Decibel get_spl(Pascal val) {
+static Decibel get_spl(Rsp val) {
     return 20 * log10(val / (val < 0 ? -QUANT_LIM - 1 : QUANT_LIM));
 }
 
-static Pascal spl_to_pascal(Decibel gain) {
-    return (Pascal) (QUANT_LIM * pow(10, 0.05 * gain));
+static Rsp spl_to_rsp(Decibel gain) {
+    return (Rsp) (QUANT_LIM * pow(10, 0.05 * gain));
 }
 
 static double spl_to_ratio(Decibel gain) {
@@ -26,7 +26,7 @@ DecibelUtils* decibel_utils() {
     if(!instance._is_initialized) {
         instance._is_initialized = true;
         instance.get_spl = get_spl;
-        instance.spl_to_pascal = spl_to_pascal;
+        instance.spl_to_rsp = spl_to_rsp;
         instance.spl_to_ratio = spl_to_ratio;
     }
 

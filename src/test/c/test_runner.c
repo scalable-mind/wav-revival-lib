@@ -1,5 +1,6 @@
 #include <util/decibel_utils_test.h>
 #include <util/signal_fading_utils_test.h>
+#include <util/wav_compressing_utils_test.h>
 #include <api/double_array_api_impl_test.h>
 #include <api/uint64_array_api_impl_test.h>
 #include <tiny_test/test_utils.h>
@@ -23,6 +24,11 @@ int main(int argc, char* argv[]) {
     ADD_TEST(SignalFadingUtils__fade_out__test_1);
     ADD_TEST(SignalFadingUtils__fade_expand__test_1);
     ADD_TEST(SignalFadingUtils__fade_expand__test_2);
+
+    // WavCompressingUtils Tests
+    ADD_TEST(WavCompressingUtils__compress_smooth_rsp_chunk__test_1);
+    ADD_TEST(WavCompressingUtils__compress_smooth_rsp_chunk__test_2);
+    ADD_TEST(WavCompressingUtils__compress_smooth_rsp_chunk__test_3);
 
     // Uint64ArrayApiImpl Tests
     ADD_TEST(Uint64ArrayApiImpl__push_back__test_1);

@@ -7,7 +7,7 @@
 void DecibelUtils__get_spl__test_1();
 
 /*
- * Checks if hand-calculated values are the same as the output of spl_to_pascal().
+ * Checks if hand-calculated values are the same as the output of spl_to_rsp().
  */
 void DecibelUtils__spl_to_pascal__test_1();
 

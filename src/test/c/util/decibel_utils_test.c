@@ -6,7 +6,7 @@
 #include <util/decibel_utils.h>
 
 void DecibelUtils__get_spl__test_1() {
-    const Pascal SIGNAL_AMPS[10] = {-16384, 16383, -23197, 23197, 8230,
+    const Rsp SIGNAL_AMPS[10] = {-16384, 16383, -23197, 23197, 8230,
                                      -8230,  -4125, 4125,   2067,  -2067};
     const Decibel SIGNAL_DBS[10] = {-6.0206,    -6.020865, -3.000362,  -3.000097,  -12.000737,
                                    -12.001002, -18.00052, -18.000255, -24.001924, -24.002189};
@@ -16,14 +16,14 @@ void DecibelUtils__get_spl__test_1() {
 }
 
 void DecibelUtils__spl_to_pascal__test_1() {
-    assert(decibel_utils()->spl_to_pascal(-3) == 23197);
-    assert(decibel_utils()->spl_to_pascal(-6) == 16422);
-    assert(decibel_utils()->spl_to_pascal(-9) == 11626);
-    assert(decibel_utils()->spl_to_pascal(-12) == 8230);
-    assert(decibel_utils()->spl_to_pascal(-15) == 5826);
-    assert(decibel_utils()->spl_to_pascal(-18) == 4125);
-    assert(decibel_utils()->spl_to_pascal(-21) == 2920);
-    assert(decibel_utils()->spl_to_pascal(-24) == 2067);
+    assert(decibel_utils()->spl_to_rsp(-3) == 23197);
+    assert(decibel_utils()->spl_to_rsp(-6) == 16422);
+    assert(decibel_utils()->spl_to_rsp(-9) == 11626);
+    assert(decibel_utils()->spl_to_rsp(-12) == 8230);
+    assert(decibel_utils()->spl_to_rsp(-15) == 5826);
+    assert(decibel_utils()->spl_to_rsp(-18) == 4125);
+    assert(decibel_utils()->spl_to_rsp(-21) == 2920);
+    assert(decibel_utils()->spl_to_rsp(-24) == 2067);
 }
 
 void DecibelUtils__spl_to_ratio__test_1() {
