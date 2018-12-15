@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** RSP is Raw Sound Pressure, a digital signal representation of sound pressure in pascal (Pa). */
 typedef int16_t Rsp;
 
@@ -22,5 +26,9 @@ typedef struct {
 } DecibelUtils;
 
 DecibelUtils* decibel_utils();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

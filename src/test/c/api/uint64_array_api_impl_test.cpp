@@ -1,11 +1,9 @@
-#include <assert.h>
-#include <stdio.h>
+#include <catch2/catch.hpp>
 
 #include <api/uint64_array_api.h>
 #include <domain/uint64_array.h>
 
-
-void Uint64ArrayApiImpl__push_back__test_1() {
+TEST_CASE("Uint64ArrayApiImpl::push_back - test #1", "[Uint64ArrayApiImpl]") {
     Uint64Array* arr = uint64_array_api().init(1);
 
     size_t actual_size_at_start = arr->size;
@@ -14,13 +12,14 @@ void Uint64ArrayApiImpl__push_back__test_1() {
 
     uint64_array_api().del(arr);
 
-    assert(actual_size_at_start == 0);
-    assert(actual_size_afterwards == 1);
+    REQUIRE(actual_size_at_start == 0);
+    REQUIRE(actual_size_afterwards == 1);
 }
 
 
+
+TEST_CASE("Uint64ArrayApiImpl::shrink_to_fit - test #1", "[Uint64ArrayApiImpl]") {
 #define EXPECTED_CAPACITY 64
-void Uint64ArrayApiImpl__shrink_to_fit__test_1() {
     Uint64Array* arr = uint64_array_api().init(100);
     for (int i = 0; i < EXPECTED_CAPACITY / 2; i++) {
         uint64_array_api().push_back(arr, 5555);
@@ -31,13 +30,13 @@ void Uint64ArrayApiImpl__shrink_to_fit__test_1() {
 
     uint64_array_api().del(arr);
 
-    assert(actual_capacity == EXPECTED_CAPACITY);
-}
+    REQUIRE(actual_capacity == EXPECTED_CAPACITY);
 #undef EXPECTED_CAPACITY
+}
 
 
+TEST_CASE("Uint64ArrayApiImpl::push_back - test #2", "[Uint64ArrayApiImpl]") {
 #define CAPACITY_AT_START 10
-void Uint64ArrayApiImpl__push_back__test_2() {
     Uint64Array* arr = uint64_array_api().init(CAPACITY_AT_START);
 
     for (int i = 0; i < CAPACITY_AT_START; i++) {
@@ -48,14 +47,13 @@ void Uint64ArrayApiImpl__push_back__test_2() {
 
     uint64_array_api().del(arr);
 
-    assert(actual_capacity_afterwards > CAPACITY_AT_START);
-}
+    REQUIRE(actual_capacity_afterwards > CAPACITY_AT_START);
 #undef CAPACITY_AT_START
+}
 
-
+TEST_CASE("Uint64ArrayApiImpl::end - test #1", "[Uint64ArrayApiImpl]") {
 #define EXPECTED_END_AT_START 5555
 #define EXPECTED_END_AFTERWARDS 8888
-void Uint64ArrayApiImpl__end__test_1() {
     Uint64Array* arr = uint64_array_api().init(5);
 
     uint64_array_api().push_back(arr, EXPECTED_END_AT_START);
@@ -66,8 +64,8 @@ void Uint64ArrayApiImpl__end__test_1() {
 
     uint64_array_api().del(arr);
 
-    assert(actual_end_at_start == EXPECTED_END_AT_START);
-    assert(actual_end_afterwards == EXPECTED_END_AFTERWARDS);
-}
+    REQUIRE(actual_end_at_start == EXPECTED_END_AT_START);
+    REQUIRE(actual_end_afterwards == EXPECTED_END_AFTERWARDS);
 #undef EXPECTED_END_AT_START
 #undef EXPECTED_END_AFTERWARDS
+}

@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // NOTE: we use standard PCM RIFF WAV header with 44 bytes size.
 typedef struct {
 
@@ -33,5 +37,9 @@ typedef struct {
     uint32_t data_size;
 
 } WavHeader;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

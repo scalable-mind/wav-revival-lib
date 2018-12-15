@@ -5,6 +5,10 @@
 
 #include <domain/double_array.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
 
     bool _is_initialized;
@@ -28,5 +32,9 @@ typedef struct {
 } DoubleArrayApi;
 
 DoubleArrayApi* double_array_api();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

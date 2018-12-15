@@ -5,6 +5,10 @@
 
 #include "./wav_header.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
 
     READ,
@@ -22,5 +26,9 @@ typedef struct {
     FILE* file;
 
 } WavFile;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

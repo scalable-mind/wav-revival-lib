@@ -1,0 +1,57 @@
+{
+    "cache": "pybuild/.build.cache.json",
+    "build": {
+        "Debug": {
+            "buildDir": "cmake-build-debug",
+            "cmakeBuildType": "-DCMAKE_BUILD_TYPE=Debug"
+        },
+        "Release": {
+            "buildDir":"cmake-build-release",
+            "cmakeBuildType": "-DCMAKE_BUILD_TYPE=Release"
+        },
+        "arch": {
+            "x64": "-arch=x64",
+            "x86": "-arch=x86"
+        },
+        "commands": {
+            "msvc": [
+                "cmd",
+                "/c",
+                "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/Common7/Tools/VsDevCmd.bat"
+            ],
+            "cmakeConf": [
+                "cmake",
+                "-G",
+                "Ninja",
+                ".."
+            ],
+            "cmakeBuild": [
+                "cmake",
+                "--build",
+                ".",
+                "--target"
+            ]
+        }
+    },
+    "installCatch": {
+        "catchZipUrl": "https://github.com/catchorg/Catch2/archive/v2.5.0.zip",
+        "catchZipTmpFileName": "tmp_catch2.zip",
+        "catchInstallPrefix": "catch2_dist",
+        "commands": [
+            [
+                "cmake",
+                "-Bbuild",
+                "-H.",
+                "-DBUILD_TESTING=OFF",
+                "-DCMAKE_INSTALL_PREFIX=../catch2_dist"
+            ],
+            [
+                "cmake",
+                "--build",
+                "build/",
+                "--target",
+                "install"
+            ]
+        ]
+    }
+}

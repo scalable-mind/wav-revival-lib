@@ -53,7 +53,7 @@ static void resize(Uint64Array* self, size_t new_size) {
 
 static void push_back(Uint64Array* self, uint64_t val) {
     if (self->size >= self->capacity) {
-        resize(self, (uint64_t) (CAPACITY_INCREASE_FACTOR * self->capacity));
+        resize(self, (size_t) (CAPACITY_INCREASE_FACTOR * self->capacity));
     }
     self->data[self->size++] = val;
 }

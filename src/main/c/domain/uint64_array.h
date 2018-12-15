@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef uint64_t* Uint64Iterator;
 
 typedef struct {
@@ -14,5 +18,9 @@ typedef struct {
     uint64_t* data;
 
 } Uint64Array;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

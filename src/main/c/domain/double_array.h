@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef double* DoubleIterator;
 
 typedef struct {
@@ -14,5 +18,9 @@ typedef struct {
     double* data;
 
 } DoubleArray;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

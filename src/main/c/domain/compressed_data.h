@@ -3,6 +3,10 @@
 
 #include <domain/uint64_array.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
 
     int start_value;
@@ -10,5 +14,9 @@ typedef struct {
     Uint64Array* compressed_data;
 
 } CompressedData;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

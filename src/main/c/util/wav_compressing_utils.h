@@ -8,6 +8,10 @@
 #include <domain/wav_file.h>
 #include <util/decibel_utils.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum SilenceThresholdFilteredValue {
     STFV_BELOW = 0,
     STFV_ABOVE,
@@ -55,5 +59,9 @@ typedef struct {
 } WavCompressingUtils;
 
 WavCompressingUtils* wav_compressing_utils();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

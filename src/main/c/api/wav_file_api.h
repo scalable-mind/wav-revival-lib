@@ -3,6 +3,10 @@
 
 #include "../domain/wav_file.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
 
     WavFile* (*init)(const char* file_path, FileIoMode file_io_mode, size_t buffer_size);
@@ -16,5 +20,9 @@ typedef struct {
 } WavFileApi;
 
 WavFileApi wav_file_api();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

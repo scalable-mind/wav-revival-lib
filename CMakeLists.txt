@@ -1,18 +1,28 @@
 cmake_minimum_required(VERSION 3.10)
-project(wav_revival_lib C)
+project(wav_revival_lib)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
+find_package(Catch2 REQUIRED)
+
+include_directories("C:/Program Files (x86)/Catch2/include")
 include_directories(src/main/c)
 include_directories(src/test/c)
-include_directories(src/lib/c)
 
 # targets
-set(TARGET_TEST src/test/c/test_runner.c)
+set(TARGET_CATCH2_TEST src/test/c/test_catch2.cpp)
 
 # sources
 aux_source_directory(src/main/c/api/ API_SOURCES)
 aux_source_directory(src/main/c/util/ UTIL_SOURCES)
 aux_source_directory(src/test/c/api/ API_TEST_SOURCES)
 aux_source_directory(src/test/c/util/ UTIL_TEST_SOURCES)
-aux_source_directory(src/lib/c/tiny_test/ TINY_TEST_SOURCES)
 
-add_executable(tests ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES} ${TINY_TEST_SOURCES} ${TARGET_TEST})
+add_executable(tests_catch2 ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES}
+        ${TARGET_CATCH2_TEST})
+
+target_link_libraries(tests_catch2 Catch2::Catch2)
+
+include(CTest)
+include(Catch)
+catch_discover_tests(tests_catch2)
