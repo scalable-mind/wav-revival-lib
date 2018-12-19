@@ -3,9 +3,16 @@ project(wav_revival_lib)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
+if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
+else()
+    message(WARNING "The file conanbuildinfo.cmake doesn't exist, you have to run conan install first")
+endif()
+
 find_package(Catch2 REQUIRED)
 
-include_directories("C:/Program Files (x86)/Catch2/include")
+#include_directories("C:/Program Files (x86)/Catch2/include")
 include_directories(src/main/c)
 include_directories(src/test/c)
 

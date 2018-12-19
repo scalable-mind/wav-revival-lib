@@ -1,15 +1,25 @@
+import os
+import json
+import shutil
+import argparse
 import subprocess
-from urllib import request
-
-from pynt import task
-
-from pybuild.helpers import *
-
-cfg = read_config("pybuild/build.config.json")
 
 
-@task()
+def read_config(path):
+    with open(path) as f:
+        return json.load(f)
+
+
+def delete_dir(path):
+    if os.path.exists(path):
+        shutil.rmtree(path)
+
+
+cfg = read_config("build_config.json")
+
+
 def build(arch="x86", build_type="Debug", target="tests_catch2"):
+    install_deps()
     if not os.path.exists(cfg["build"][build_type]["buildDir"]):
         os.mkdir(cfg["build"][build_type]["buildDir"])
 
@@ -17,36 +27,17 @@ def build(arch="x86", build_type="Debug", target="tests_catch2"):
                         cwd=os.path.realpath(cfg["build"][build_type]["buildDir"]))
 
 
-@task()
 def clean(build_type):
     delete_dir(cfg["build"][build_type]["buildDir"])
 
 
-@task()
 def install_deps():
-    install_catch2()
-
-
-@task()
-def install_catch2():
-    catch = cfg["installCatch"]
-
-    if _check_hash(catch["catchInstallPrefix"], catch["catchInstallPrefix"]):
-        print("Already installed.")
-    else:
-        delete_dir(catch["catchInstallPrefix"])
-        request.urlretrieve(catch["catchZipUrl"], catch["catchZipTmpFileName"])
-
-        src_dir = unzip(catch["catchZipTmpFileName"],
-                        delete_zip=True, return_root=True)
-
-        for cmd in catch["commands"]:
-            p = subprocess.Popen(cmd, cwd=os.path.realpath(src_dir))
-            p.wait()
-
-        delete_dir(src_dir)
-
-        _save_hash(catch["catchInstallPrefix"], catch["catchInstallPrefix"])
+    if os.name == 'nt':
+        for cmd in cfg["build"]["conan"]["msvc"]:
+            subprocess.call(cmd)
+    elif os.name == 'posix':
+        for cmd in cfg["build"]["conan"]["gcc"]:
+            subprocess.call(cmd)
 
 
 def _msvc_cmd(arch):
@@ -62,28 +53,23 @@ def _cmake_build_cmd(target):
 
 
 def _build_cmd(arch, build_type, target):
-    return _msvc_cmd(arch) + ["&&"] + _cmake_config_cmd(build_type) + ["&&"] + _cmake_build_cmd(target)
+    cmd = ["&&"] + _cmake_config_cmd(build_type) + ["&&"] + _cmake_build_cmd(target)
+    if os.name == "nt":
+        cmd = _msvc_cmd(arch) + cmd
+    elif os.name == "posix":
+        cmd = cmd
+    return cmd
 
 
-def _check_hash(dirname, name) -> bool:
-    if os.path.exists(cfg["cache"]):
-        with open(cfg["cache"], 'r') as f:
-            cache = json.load(f)
-        if name in cache:
-            return GetHashofDirs(dirname) == cache[name]
-    return False
-
-
-def _save_hash(dirname, name):
-    cache = {}
-    try:
-        new_hash = GetHashofDirs(dirname)
-        if os.path.exists(cfg["cache"]):
-            with open(cfg["cache"], 'r') as f:
-                cache = json.load(f)
-        cache[name] = new_hash
-        with open(cfg["cache"], 'w') as f:
-            json.dump(cache, f)
-    except:
-        import traceback
-        traceback.print_exc()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('--type', choices=['debug', 'release'])
+    parser.add_argument('--arch', choices=['x86', 'x64'])
+    parser.add_argument('--target', type=str)
+    parser.add_argument('--clean', action='store_true')
+    args = parser.parse_args()
+    if args.clean:
+        clean('Debug')
+        clean('Release')
+    else:
+        build(build_type=args.type.capitalize(), arch=args.arch, target=args.target)
