@@ -23,6 +23,6 @@ add_executable(tests_catch2 ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} $
 
 target_link_libraries(tests_catch2 Catch2::Catch2)
 
-include(CTest)
+enable_testing()
 include(Catch)
 catch_discover_tests(tests_catch2)
