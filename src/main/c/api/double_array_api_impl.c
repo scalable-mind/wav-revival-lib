@@ -4,6 +4,7 @@
 
 #include <domain/double_array.h>
 #include <api/double_array_api.h>
+#include <stdio.h>
 
 #define CAPACITY_INCREASE_FACTOR 1.5
 #define DOUBLE_ARRAY_MIN_CAPACITY 64
@@ -72,6 +73,24 @@ static DoubleIterator end(DoubleArray* self) {
     return begin(self) + self->size;
 }
 
+static void print(DoubleArray* self) {
+    printf("[ ");
+
+    bool first = true;
+
+    for (DoubleIterator it = begin(self); it != end(self); it++) {
+        if (first) {
+            printf("%.2lf", *it);
+            first = false;
+        }
+        else {
+            printf(", %.2lf", *it);
+        }
+    }
+
+    printf(" ]\n");
+}
+
 DoubleArrayApi* double_array_api() {
     static DoubleArrayApi instance = { ._is_initialized=false };
 
@@ -85,6 +104,7 @@ DoubleArrayApi* double_array_api() {
         instance.resize = resize;
         instance.begin = begin;
         instance.end = end;
+        instance.print = print;
     }
 
     return &instance;

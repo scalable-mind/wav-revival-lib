@@ -28,6 +28,8 @@ aux_source_directory(src/test/c/util/ UTIL_TEST_SOURCES)
 add_executable(tests_catch2 ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES}
         ${TARGET_CATCH2_TEST})
 
+add_library(WavRevival SHARED ${API_SOURCES} ${UTIL_SOURCES})
+
 target_link_libraries(tests_catch2 Catch2::Catch2)
 
 enable_testing()
