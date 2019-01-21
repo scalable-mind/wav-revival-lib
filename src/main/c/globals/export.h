@@ -1,7 +1,7 @@
 #ifndef EXPORT_H
 #define EXPORT_H
 
-#ifdef _WIN32
+#if _WIN32 || _WIN64
 #    ifdef MODULE_API_EXPORTS
 #        define MODULE_API __declspec(dllexport)
 #    else

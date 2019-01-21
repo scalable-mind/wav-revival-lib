@@ -5,9 +5,9 @@
 
 #include <domain/double_array.h>
 
-#include <globals/export.h>
-
 #define MODULE_API_EXPORTS
+
+#include <globals/export.h>
 
 #ifdef __cplusplus
 extern "C" {
