@@ -7,9 +7,9 @@
 TEST_CASE("DoubleArrayApiImpl::push_back - test #1", "[DoubleArrayApiImpl]") {
     DoubleArray* arr = double_array_api()->init(1);
 
-    size_t actual_size_at_start = arr->size;
+    size_t actual_size_at_start = arr->_size;
     double_array_api()->push_back(arr, 5555);
-    size_t actual_size_afterwards = arr->size;
+    size_t actual_size_afterwards = arr->_size;
 
     double_array_api()->del(arr);
 
@@ -26,7 +26,7 @@ TEST_CASE("DoubleArrayApiImpl::shrink_to_fit - test #1", "[DoubleArrayApiImpl]")
     }
 
     double_array_api()->shrink_to_fit(arr);
-    size_t actual_capacity = arr->capacity;
+    size_t actual_capacity = arr->_capacity;
 
     double_array_api()->del(arr);
 
@@ -43,7 +43,7 @@ TEST_CASE("DoubleArrayApiImpl::shrink_to_fit - test #2", "[DoubleArrayApiImpl]")
     }
 
     double_array_api()->shrink_to_fit(arr);
-    size_t actual_capacity = arr->capacity;
+    size_t actual_capacity = arr->_capacity;
 
     double_array_api()->del(arr);
 
@@ -59,7 +59,7 @@ TEST_CASE("DoubleArrayApiImpl::push_back - test #2", "[DoubleArrayApiImpl]") {
         double_array_api()->push_back(arr, 5555);
     }
     double_array_api()->push_back(arr, 8888);  // this pushing triggers the array to resize its capacity
-    size_t actual_capacity_afterwards = arr->capacity;
+    size_t actual_capacity_afterwards = arr->_capacity;
 
     double_array_api()->del(arr);
 
@@ -73,7 +73,7 @@ TEST_CASE("DoubleArrayApiImpl::push_some - test #1", "[DoubleArrayApiImpl]") {
 
     double_array_api()->push_some(arr, EXPECTED_SIZE, 3.14);
 
-    size_t actual_size_afterwards = arr->size;
+    size_t actual_size_afterwards = arr->_size;
 
     double_array_api()->del(arr);
 
