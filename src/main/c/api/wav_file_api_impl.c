@@ -34,16 +34,16 @@ static size_t write_next_chunk(WavFile* self, void* buffer) {
     return fwrite(buffer, sample_size, self->buffer_size, self->file);
 }
 
-WavFileApi wav_file_api() {
-    static WavFileApi instance;
-    static bool is_initialized = false;
+WavFileApi* wav_file_api() {
+    static WavFileApi instance = { ._is_initialized=false };
 
-    if (!is_initialized) {
-        is_initialized = true;
+    if (!instance._is_initialized) {
+        instance._is_initialized = true;
         instance.init = init;
         instance.del = del;
         instance.read_next_chunk = read_next_chunk;
         instance.write_next_chunk = write_next_chunk;
     }
-    return instance;
+
+    return &instance;
 }

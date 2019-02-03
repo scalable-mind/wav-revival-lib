@@ -9,6 +9,8 @@ extern "C" {
 
 typedef struct {
 
+    bool _is_initialized;
+
     Uint64Array* (*init)(size_t capacity);
 
     void (*del)(Uint64Array* self);
@@ -25,7 +27,7 @@ typedef struct {
 
 } Uint64ArrayApi;
 
-Uint64ArrayApi uint64_array_api();
+Uint64ArrayApi* uint64_array_api();
 
 #ifdef __cplusplus
 }

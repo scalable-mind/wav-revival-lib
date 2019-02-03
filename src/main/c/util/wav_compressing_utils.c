@@ -58,12 +58,12 @@ static void process_smooth_region(bool* smooth_region_end, size_t silence, Stfv 
                                   CompressedData* dst) {
     if (
             (filtered_value == STFV_ABOVE && *smooth_region_end) ||
-            (filtered_value == STFV_BELOW && samples_count <= silence && dst->compressed_data->size > 0)
+            (filtered_value == STFV_BELOW && samples_count <= silence && dst->compressed_data->_size > 0)
     ) {
-        *(uint64_array_api().end(dst->compressed_data) - 1) += samples_count;
+        *(uint64_array_api()->end(dst->compressed_data) - 1) += samples_count;
         *smooth_region_end = !(*smooth_region_end);
     } else {
-        uint64_array_api().push_back(dst->compressed_data, samples_count);
+        uint64_array_api()->push_back(dst->compressed_data, samples_count);
     }
 }
 

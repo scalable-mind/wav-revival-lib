@@ -1,13 +1,15 @@
 #ifndef WAV_FILE_API_H
 #define WAV_FILE_API_H
 
-#include "../domain/wav_file.h"
+#include <domain/wav_file.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 typedef struct {
+
+    bool _is_initialized;
 
     WavFile* (*init)(const char* file_path, FileIoMode file_io_mode, size_t buffer_size);
 
@@ -19,7 +21,7 @@ typedef struct {
 
 } WavFileApi;
 
-WavFileApi wav_file_api();
+WavFileApi* wav_file_api();
 
 #ifdef __cplusplus
 }

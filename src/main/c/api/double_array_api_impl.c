@@ -14,29 +14,29 @@ static DoubleArray* init(size_t capacity) {
         capacity = DOUBLE_ARRAY_MIN_CAPACITY;
     }
     DoubleArray* array = malloc(sizeof(DoubleArray));
-    array->capacity = capacity;
-    array->data = calloc(capacity, sizeof(double));
-    array->size = 0;
+    array->_capacity = capacity;
+    array->_data = calloc(capacity, sizeof(double));
+    array->_size = 0;
 
     return array;
 }
 
 static void del(DoubleArray* self) {
-    free(self->data);
+    free(self->_data);
     free(self);
 }
 
 static void shrink_to_fit(DoubleArray* self) {
-    size_t new_capacity = self->size;
+    size_t new_capacity = self->_size;
     if (new_capacity < DOUBLE_ARRAY_MIN_CAPACITY) {
         new_capacity = DOUBLE_ARRAY_MIN_CAPACITY;
     }
-    if (self->capacity > new_capacity) {
+    if (self->_capacity > new_capacity) {
         void* ptr = calloc(new_capacity, sizeof(double));
-        memcpy(ptr, self->data, sizeof(double) * self->size);
-        free(self->data);
-        self->data = ptr;
-        self->capacity = new_capacity;
+        memcpy(ptr, self->_data, sizeof(double) * self->_size);
+        free(self->_data);
+        self->_data = ptr;
+        self->_capacity = new_capacity;
     }
 }
 
@@ -45,18 +45,18 @@ static void resize(DoubleArray* self, size_t new_size) {
         new_size = DOUBLE_ARRAY_MIN_CAPACITY;
     }
     void* ptr = calloc(new_size, sizeof(double));
-    memcpy(ptr, self->data, (sizeof(double) * (new_size > self->size ? self->size : new_size)));
-    free(self->data);
-    self->data = ptr;
-    self->capacity = new_size;
-    self->size = new_size > self->size ? self->size : new_size;
+    memcpy(ptr, self->_data, (sizeof(double) * (new_size > self->_size ? self->_size : new_size)));
+    free(self->_data);
+    self->_data = ptr;
+    self->_capacity = new_size;
+    self->_size = new_size > self->_size ? self->_size : new_size;
 }
 
 static void push_back(DoubleArray* self, double val) {
-    if (self->size >= self->capacity) {
-        resize(self, (size_t) (CAPACITY_INCREASE_FACTOR * self->capacity));
+    if (self->_size >= self->_capacity) {
+        resize(self, (size_t) (CAPACITY_INCREASE_FACTOR * self->_capacity));
     }
-    self->data[self->size++] = val;
+    self->_data[self->_size++] = val;
 }
 
 static void push_some(DoubleArray* self, size_t count, double val) {
@@ -66,11 +66,11 @@ static void push_some(DoubleArray* self, size_t count, double val) {
 }
 
 static DoubleIterator begin(DoubleArray* self) {
-    return &(self->data[0]);
+    return &(self->_data[0]);
 }
 
 static DoubleIterator end(DoubleArray* self) {
-    return begin(self) + self->size;
+    return begin(self) + self->_size;
 }
 
 static void print(DoubleArray* self) {
