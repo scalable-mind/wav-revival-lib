@@ -3,11 +3,11 @@
 
 #include <domain/uint64_array.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <macros/export_start.h>
 
 typedef struct {
+
+    bool _is_initialized;
 
     Uint64Array* (*init)(size_t capacity);
 
@@ -25,10 +25,8 @@ typedef struct {
 
 } Uint64ArrayApi;
 
-Uint64ArrayApi uint64_array_api();
+MODULE_API Uint64ArrayApi* uint64_array_api();
 
-#ifdef __cplusplus
-}
-#endif
+#include <macros/export_end.h>
 
 #endif

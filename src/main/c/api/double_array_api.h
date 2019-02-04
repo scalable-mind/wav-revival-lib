@@ -5,9 +5,7 @@
 
 #include <domain/double_array.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <macros/export_start.h>
 
 typedef struct {
 
@@ -29,12 +27,12 @@ typedef struct {
 
     DoubleIterator (*end)(DoubleArray* self);
 
+    void (*print)(DoubleArray* self);
+
 } DoubleArrayApi;
 
-DoubleArrayApi* double_array_api();
+MODULE_API DoubleArrayApi* double_array_api();
 
-#ifdef __cplusplus
-}
-#endif
+#include <macros/export_end.h>
 
 #endif

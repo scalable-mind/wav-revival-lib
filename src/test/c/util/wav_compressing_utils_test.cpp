@@ -24,7 +24,7 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #1", "[WavCompr
     size_t expected[6] = {5, 5, 12, 5, 10, 83};
 
     CompressedData cdata;
-    cdata.compressed_data=uint64_array_api().init(0);
+    cdata.compressed_data=uint64_array_api()->init(0);
 
     bool fill = false;
 
@@ -38,25 +38,24 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #1", "[WavCompr
 
     if (last > 0) {
         if (fill) {
-            *(uint64_array_api().end(cdata.compressed_data) - 1) += last;
+            *(uint64_array_api()->end(cdata.compressed_data) - 1) += last;
         } else {
-            uint64_array_api().push_back(cdata.compressed_data, last);
+            uint64_array_api()->push_back(cdata.compressed_data, last);
         }
     }
 
     bool success = true;
 
-    if (cdata.compressed_data->size != 6) {
-        uint64_array_api().del(cdata.compressed_data);
-//        REQUIRE(false);
+    if (cdata.compressed_data->_size != 6) {
+        uint64_array_api()->del(cdata.compressed_data);
         FAIL();
     }
 
-    for (size_t i = 0; i < cdata.compressed_data->size; i++) {
-        success = success && (cdata.compressed_data->data[i] == expected[i]);
+    for (size_t i = 0; i < cdata.compressed_data->_size; i++) {
+        success = success && (cdata.compressed_data->_data[i] == expected[i]);
     }
 
-    uint64_array_api().del(cdata.compressed_data);
+    uint64_array_api()->del(cdata.compressed_data);
 
     REQUIRE(success);
 }
@@ -79,7 +78,7 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #2", "[WavCompr
     size_t expected[8] = {5, 5, 12, 5, 10, 67, 10, 6};
 
     CompressedData cdata;
-    cdata.compressed_data=uint64_array_api().init(0);
+    cdata.compressed_data=uint64_array_api()->init(0);
 
     bool fill = false;
 
@@ -93,25 +92,24 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #2", "[WavCompr
 
     if (last > 0) {
         if (fill) {
-            *(uint64_array_api().end(cdata.compressed_data) - 1) += last;
+            *(uint64_array_api()->end(cdata.compressed_data) - 1) += last;
         } else {
-            uint64_array_api().push_back(cdata.compressed_data, last);
+            uint64_array_api()->push_back(cdata.compressed_data, last);
         }
     }
 
     bool success = true;
 
-    if (cdata.compressed_data->size != 8) {
-        uint64_array_api().del(cdata.compressed_data);
-//        REQUIRE(false);
+    if (cdata.compressed_data->_size != 8) {
+        uint64_array_api()->del(cdata.compressed_data);
         FAIL();
     }
 
-    for (size_t i = 0; i < cdata.compressed_data->size; i++) {
-        success = success && (cdata.compressed_data->data[i] == expected[i]);
+    for (size_t i = 0; i < cdata.compressed_data->_size; i++) {
+        success = success && (cdata.compressed_data->_data[i] == expected[i]);
     }
 
-    uint64_array_api().del(cdata.compressed_data);
+    uint64_array_api()->del(cdata.compressed_data);
 
     REQUIRE(success);
 }
@@ -128,7 +126,7 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #3", "[WavCompr
     size_t expected[9] = {5, 5, 12, 5, 10, 67, 10, 4, 2};
 
     CompressedData cdata;
-    cdata.compressed_data=uint64_array_api().init(0);
+    cdata.compressed_data=uint64_array_api()->init(0);
 
     bool fill = false;
 
@@ -142,24 +140,24 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #3", "[WavCompr
 
     if (last > 0) {
         if (fill) {
-            *(uint64_array_api().end(cdata.compressed_data) - 1) += last;
+            *(uint64_array_api()->end(cdata.compressed_data) - 1) += last;
         } else {
-            uint64_array_api().push_back(cdata.compressed_data, last);
+            uint64_array_api()->push_back(cdata.compressed_data, last);
         }
     }
 
     bool success = true;
 
-    if (cdata.compressed_data->size != 9) {
-        uint64_array_api().del(cdata.compressed_data);
+    if (cdata.compressed_data->_size != 9) {
+        uint64_array_api()->del(cdata.compressed_data);
         FAIL();
     }
 
-    for (size_t i = 0; i < cdata.compressed_data->size; i++) {
-        success = success && (cdata.compressed_data->data[i] == expected[i]);
+    for (size_t i = 0; i < cdata.compressed_data->_size; i++) {
+        success = success && (cdata.compressed_data->_data[i] == expected[i]);
     }
 
-    uint64_array_api().del(cdata.compressed_data);
+    uint64_array_api()->del(cdata.compressed_data);
 
     REQUIRE(success);
 }

@@ -11,11 +11,11 @@ typedef double* DoubleIterator;
 
 typedef struct {
 
-    size_t size;
+    size_t _size;
 
-    size_t capacity;
+    size_t _capacity;
 
-    double* data;
+    double* _data;
 
 } DoubleArray;
 

@@ -11,11 +11,11 @@ typedef uint64_t* Uint64Iterator;
 
 typedef struct {
 
-    size_t size;
+    size_t _size;
 
-    size_t capacity;
+    size_t _capacity;
 
-    uint64_t* data;
+    uint64_t* _data;
 
 } Uint64Array;
 
