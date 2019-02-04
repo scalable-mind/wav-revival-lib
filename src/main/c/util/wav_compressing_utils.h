@@ -8,6 +8,8 @@
 #include <domain/wav_file.h>
 #include <util/decibel_utils.h>
 
+#include <macros/export_start.h>
+
 typedef enum SilenceThresholdFilteredValue {
     STFV_BELOW = 0,
     STFV_ABOVE,
@@ -54,6 +56,8 @@ typedef struct {
 
 } WavCompressingUtils;
 
-WavCompressingUtils* wav_compressing_utils();
+MODULE_API WavCompressingUtils* wav_compressing_utils();
+
+#include <macros/export_end.h>
 
 #endif

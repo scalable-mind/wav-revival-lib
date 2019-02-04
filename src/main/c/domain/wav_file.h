@@ -3,7 +3,11 @@
 
 #include <stdio.h>
 
-#include "./wav_header.h"
+#include <domain/wav_header.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef enum {
 
@@ -22,5 +26,9 @@ typedef struct {
     FILE* file;
 
 } WavFile;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

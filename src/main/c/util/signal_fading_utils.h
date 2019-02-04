@@ -7,6 +7,8 @@
 #include <util/decibel_utils.h>
 #include <domain/uint64_array.h>
 
+#include <macros/export_start.h>
+
 typedef struct {
 
     bool _is_initialized;
@@ -24,6 +26,8 @@ typedef struct {
 
 } SignalFadingUtils;
 
-SignalFadingUtils* signal_fading_utils();
+MODULE_API SignalFadingUtils* signal_fading_utils();
+
+#include <macros/export_end.h>
 
 #endif

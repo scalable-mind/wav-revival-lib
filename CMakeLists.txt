@@ -1,18 +1,54 @@
 cmake_minimum_required(VERSION 3.10)
-project(wav_revival_lib C)
+project(wav_revival_lib)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
+            "${CMAKE_BINARY_DIR}/conan.cmake")
+endif()
+
+include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+conan_cmake_run(CONANFILE conanfile.txt
+        BUILD missing)
+
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+
 
 include_directories(src/main/c)
 include_directories(src/test/c)
-include_directories(src/lib/c)
 
 # targets
-set(TARGET_TEST src/test/c/test_runner.c)
+set(TARGET_CATCH2_TEST src/test/c/test_catch2.cpp)
 
 # sources
 aux_source_directory(src/main/c/api/ API_SOURCES)
 aux_source_directory(src/main/c/util/ UTIL_SOURCES)
 aux_source_directory(src/test/c/api/ API_TEST_SOURCES)
 aux_source_directory(src/test/c/util/ UTIL_TEST_SOURCES)
-aux_source_directory(src/lib/c/tiny_test/ TINY_TEST_SOURCES)
 
-add_executable(tests ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES} ${TINY_TEST_SOURCES} ${TARGET_TEST})
+file(GLOB INSTALL_HEADERS_API "src/main/c/api/*.h")
+file(GLOB INSTALL_HEADERS_DOMAIN "src/main/c/domain/*.h")
+file(GLOB INSTALL_HEADERS_UTIL "src/main/c/util/*.h")
+
+add_executable(tests_catch2 ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES}
+        ${TARGET_CATCH2_TEST})
+
+add_library(wav-revival SHARED ${API_SOURCES} ${UTIL_SOURCES})
+
+target_link_libraries(tests_catch2 Catch2::Catch2)
+
+enable_testing()
+find_package(Catch2 REQUIRED)
+message(STATUS ${Catch2_DIR})
+include(Catch)
+catch_discover_tests(tests_catch2)
+
+install(FILES ${INSTALL_HEADERS_API} DESTINATION include/wav_revival/api)
+install(FILES ${INSTALL_HEADERS_DOMAIN} DESTINATION include/wav_revival/domain)
+install(FILES ${INSTALL_HEADERS_UTIL} DESTINATION include/wav_revival/util)
+install(TARGETS wav-revival DESTINATION bin)
+install(TARGETS tests_catch2 DESTINATION bin)

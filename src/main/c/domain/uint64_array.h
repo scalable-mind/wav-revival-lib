@@ -3,16 +3,24 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef uint64_t* Uint64Iterator;
 
 typedef struct {
 
-    size_t size;
+    size_t _size;
 
-    size_t capacity;
+    size_t _capacity;
 
-    uint64_t* data;
+    uint64_t* _data;
 
 } Uint64Array;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -2,7 +2,7 @@
 
 #include <util/decibel_utils.h>
 
-/*
+/**
  * PCM WAVE 16 Bit INT positive quantization limit.
  * NOTE: using "double" for more precise calculations.
  */
