@@ -3,9 +3,7 @@
 
 #include <domain/wav_file.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <macros/export_start.h>
 
 typedef struct {
 
@@ -21,10 +19,8 @@ typedef struct {
 
 } WavFileApi;
 
-WavFileApi* wav_file_api();
+MODULE_API WavFileApi* wav_file_api();
 
-#ifdef __cplusplus
-}
-#endif
+#include <macros/export_end.h>
 
 #endif

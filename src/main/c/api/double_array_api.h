@@ -5,13 +5,7 @@
 
 #include <domain/double_array.h>
 
-#define MODULE_API_EXPORTS
-
-#include <globals/export.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <macros/export_start.h>
 
 typedef struct {
 
@@ -39,10 +33,6 @@ typedef struct {
 
 MODULE_API DoubleArrayApi* double_array_api();
 
-#ifdef __cplusplus
-}
-#endif
-
-#undef MODULE_API_EXPORTS
+#include <macros/export_end.h>
 
 #endif

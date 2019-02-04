@@ -3,6 +3,10 @@ project(wav_revival_lib)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
+set (wav_revival_VERSION_MAJOR 0)
+set (wav_revival_VERSION_MINOR 1)
+set (wav_revival_VERSION_PATCH 0)
+
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
     file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
@@ -52,3 +56,11 @@ install(FILES ${INSTALL_HEADERS_DOMAIN} DESTINATION include/wav_revival/domain)
 install(FILES ${INSTALL_HEADERS_UTIL} DESTINATION include/wav_revival/util)
 install(TARGETS wav-revival DESTINATION bin)
 install(TARGETS tests_catch2 DESTINATION bin)
+
+include (InstallRequiredSystemLibraries)
+set (CPACK_RESOURCE_FILE_LICENSE
+        "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set (CPACK_PACKAGE_VERSION_MAJOR "${wav_revival_VERSION_MAJOR}")
+set (CPACK_PACKAGE_VERSION_MINOR "${wav_revival_VERSION_MINOR}")
+set (CPACK_PACKAGE_VERSION_PATCH "${wav_revival_VERSION_PATCH}")
+include (CPack)
