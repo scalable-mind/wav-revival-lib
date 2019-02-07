@@ -6,8 +6,8 @@
 
 #include <macros/export_start.h>
 
-/** RSP is Raw Sound Pressure, a digital signal representation of sound pressure in pascal (Pa). */
-typedef int16_t Rsp;
+/** Signal amplitude */
+typedef int16_t Amp;
 
 typedef double Decibel;
 
@@ -15,9 +15,9 @@ typedef struct {
 
     bool _is_initialized;
 
-    Decibel (*get_spl)(Rsp gain);
+    Decibel (*get_spl)(Amp gain);
 
-    Rsp (*spl_to_rsp)(Decibel gain);
+    Amp (*spl_to_rsp)(Decibel gain);
 
     double (*spl_to_ratio)(Decibel gain);
 
