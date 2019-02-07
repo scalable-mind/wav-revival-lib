@@ -109,3 +109,6 @@ DoubleArrayApi* double_array_api() {
 
     return &instance;
 }
+
+#undef DOUBLE_ARRAY_MIN_CAPACITY
+#undef CAPACITY_INCREASE_FACTOR

@@ -82,3 +82,6 @@ Uint64ArrayApi* uint64_array_api() {
 
     return &instance;
 }
+
+#undef UINT64_ARRAY_MIN_CAPACITY
+#undef CAPACITY_INCREASE_FACTOR
