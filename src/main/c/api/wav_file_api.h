@@ -9,7 +9,7 @@ typedef struct {
 
     bool _is_initialized;
 
-    WavFile* (*init)(const char* file_path, FileIoMode file_io_mode, size_t buffer_size);
+    WavFile* (*init)(const char* file_path, const char* file_io_mode, size_t buffer_size);
 
     void (*del)(WavFile* self);
 

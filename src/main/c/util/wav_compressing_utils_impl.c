@@ -13,7 +13,7 @@
  * @param threshold
  * @return Silence-filtered Value (STFV_ABOVE or STFV_BELOW)
  */
-static inline Stfv filter_signal(Rsp value, Rsp threshold) {
+static inline Stfv filter_signal(Amp value, Amp threshold) {
     return (abs(value) > threshold ? STFV_ABOVE : STFV_BELOW);
 }
 
@@ -67,8 +67,8 @@ static void process_smooth_region(bool* smooth_region_end, size_t silence, Stfv 
     }
 }
 
-static void compress_smooth_rsp_chunk(Rsp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
-                                      Rsp threshold, size_t silence, Stfv* filtered_value,
+static void compress_smooth_rsp_chunk(Amp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
+                                      Amp threshold, size_t silence, Stfv* filtered_value,
                                       size_t* samples_count, CompressedData* dst) {
     Stfv next_filtered_value;
 

@@ -21,14 +21,12 @@ typedef struct {
     bool _is_initialized;
 
     /**
-     * Before using this function you MUST set up these
-     *
      * Usage:
      *  CompressedData cdata = { .compressed_data=uint64_array_api().init(0) };
      *
-     *  Rsp chunks[N_CHUNKS][CHUNK_SIZE] = {...};
+     *  Amp chunks[N_CHUNKS][CHUNK_SIZE] = {...};
      *
-     *  Rsp threshold = ...;
+     *  Amp threshold = ...;
      *
      *  size_t silence = ...;
      *
@@ -50,8 +48,8 @@ typedef struct {
      *      }
      *  }
      */
-    void (*compress_smooth_rsp_chunk)(Rsp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
-                                      Rsp threshold, size_t silence, Stfv* filtered_value,
+    void (*compress_smooth_rsp_chunk)(Amp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
+                                      Amp threshold, size_t silence, Stfv* filtered_value,
                                       size_t* samples_count, CompressedData* dst);
 
 } WavCompressingUtils;

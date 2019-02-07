@@ -6,7 +6,7 @@
 #include <util/decibel_utils.h>
 
 TEST_CASE("DecibelUtils::get_spl - test #1", "[DecibelUtils]") {
-    const Rsp SIGNAL_AMPS[10] = {-16384, 16383, -23197, 23197, 8230,
+    const Amp SIGNAL_AMPS[10] = {-16384, 16383, -23197, 23197, 8230,
                                      -8230,  -4125, 4125,   2067,  -2067};
     const Decibel SIGNAL_DBS[10] = {-6.0206,    -6.020865, -3.000362,  -3.000097,  -12.000737,
                                    -12.001002, -18.00052, -18.000255, -24.001924, -24.002189};

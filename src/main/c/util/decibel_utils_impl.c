@@ -8,12 +8,12 @@
  */
 static const double QUANT_LIM = INT16_MAX;
 
-static Decibel get_spl(Rsp val) {
+static Decibel get_spl(Amp val) {
     return 20 * log10(val / (val < 0 ? -QUANT_LIM - 1 : QUANT_LIM));
 }
 
-static Rsp spl_to_rsp(Decibel gain) {
-    return (Rsp) (QUANT_LIM * pow(10, 0.05 * gain));
+static Amp spl_to_rsp(Decibel gain) {
+    return (Amp) (QUANT_LIM * pow(10, 0.05 * gain));
 }
 
 static double spl_to_ratio(Decibel gain) {

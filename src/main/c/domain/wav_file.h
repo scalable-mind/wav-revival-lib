@@ -9,14 +9,6 @@
 extern "C" {
 #endif
 
-typedef enum {
-
-    READ,
-
-    WRITE
-
-} FileIoMode;
-
 typedef struct {
 
     WavHeader header;
