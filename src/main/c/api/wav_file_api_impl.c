@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <errno.h>
 
+#define MODULE_API_EXPORTS
+
 #include <api/wav_file_api.h>
 #include <domain/wav_file.h>
 
@@ -47,3 +49,5 @@ WavFileApi* wav_file_api() {
 
     return &instance;
 }
+
+#undef MODULE_API_EXPORTS

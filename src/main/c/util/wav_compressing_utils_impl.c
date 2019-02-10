@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#define MODULE_API_EXPORTS
+
 #include <api/wav_file_api.h>
 #include <api/uint64_array_api.h>
 #include <util/decibel_utils.h>
@@ -103,3 +105,5 @@ WavCompressingUtils* wav_compressing_utils() {
     }
     return &instance;
 }
+
+#undef MODULE_API_EXPORTS

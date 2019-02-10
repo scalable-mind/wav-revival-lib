@@ -5,7 +5,11 @@
 
 #include <domain/double_array.h>
 
-#include <macros/export_start.h>
+#include <macros/export.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct {
 
@@ -33,6 +37,8 @@ typedef struct {
 
 MODULE_API DoubleArrayApi* double_array_api();
 
-#include <macros/export_end.h>
+#ifdef __cplusplus
+}
+#endif
 
 #endif

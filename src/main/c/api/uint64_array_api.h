@@ -3,7 +3,11 @@
 
 #include <domain/uint64_array.h>
 
-#include <macros/export_start.h>
+#include <macros/export.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct {
 
@@ -27,6 +31,8 @@ typedef struct {
 
 MODULE_API Uint64ArrayApi* uint64_array_api();
 
-#include <macros/export_end.h>
+#ifdef __cplusplus
+}
+#endif
 
 #endif

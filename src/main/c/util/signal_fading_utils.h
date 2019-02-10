@@ -7,7 +7,11 @@
 #include <util/decibel_utils.h>
 #include <domain/uint64_array.h>
 
-#include <macros/export_start.h>
+#include <macros/export.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct {
 
@@ -28,6 +32,8 @@ typedef struct {
 
 MODULE_API SignalFadingUtils* signal_fading_utils();
 
-#include <macros/export_end.h>
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -2,6 +2,8 @@
 #include <memory.h>
 #include <stdbool.h>
 
+#define MODULE_API_EXPORTS
+
 #include <domain/double_array.h>
 #include <api/double_array_api.h>
 #include <stdio.h>
@@ -112,3 +114,4 @@ DoubleArrayApi* double_array_api() {
 
 #undef DOUBLE_ARRAY_MIN_CAPACITY
 #undef CAPACITY_INCREASE_FACTOR
+#undef MODULE_API_EXPORTS

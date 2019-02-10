@@ -1,5 +1,7 @@
 #include <math.h>
 
+#define MODULE_API_EXPORTS
+
 #include <util/decibel_utils.h>
 
 /**
@@ -32,3 +34,5 @@ DecibelUtils* decibel_utils() {
 
     return &instance;
 }
+
+#undef MODULE_API_EXPORTS
