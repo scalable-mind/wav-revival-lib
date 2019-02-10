@@ -21,7 +21,7 @@ typedef struct {
 
     Decibel (*get_spl)(Amp gain);
 
-    Amp (*spl_to_rsp)(Decibel gain);
+    Amp (*spl_to_amp)(Decibel gain);
 
     double (*spl_to_ratio)(Decibel gain);
 

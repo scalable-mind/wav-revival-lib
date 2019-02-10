@@ -14,7 +14,7 @@ static Decibel get_spl(Amp val) {
     return 20 * log10(val / (val < 0 ? -QUANT_LIM - 1 : QUANT_LIM));
 }
 
-static Amp spl_to_rsp(Decibel gain) {
+static Amp spl_to_amp(Decibel gain) {
     return (Amp) (QUANT_LIM * pow(10, 0.05 * gain));
 }
 
@@ -28,7 +28,7 @@ DecibelUtils* decibel_utils() {
     if(!instance._is_initialized) {
         instance._is_initialized = true;
         instance.get_spl = get_spl;
-        instance.spl_to_rsp = spl_to_rsp;
+        instance.spl_to_amp = spl_to_amp;
         instance.spl_to_ratio = spl_to_ratio;
     }
 

@@ -69,7 +69,7 @@ static void process_smooth_region(bool* smooth_region_end, size_t silence, Stfv 
     }
 }
 
-static void compress_smooth_rsp_chunk(Amp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
+static void compress_smooth_amp_chunk(Amp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
                                       Amp threshold, size_t silence, Stfv* filtered_value,
                                       size_t* samples_count, CompressedData* dst) {
     Stfv next_filtered_value;
@@ -101,7 +101,7 @@ WavCompressingUtils* wav_compressing_utils() {
 
     if (!instance._is_initialized) {
         instance._is_initialized = true;
-        instance.compress_smooth_rsp_chunk = compress_smooth_rsp_chunk;
+        instance.compress_smooth_amp_chunk = compress_smooth_amp_chunk;
     }
     return &instance;
 }

@@ -6,7 +6,7 @@
 #include <domain/uint64_array.h>
 
 
-TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #1", "[WavCompressingUtils]") {
+TEST_CASE("WavCompressingUtils::compress_smooth_amp_chunk - test #1", "[WavCompressingUtils]") {
     int16_t arr[12][10]  =
             {{0, 0, 0, 0, 0, 5, 5, 5, 5, 5},
              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -33,7 +33,7 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #1", "[WavCompr
     size_t last = 0;
 
     for (int i = 0; i < 12; i++) {
-        wav_compressing_utils()->compress_smooth_rsp_chunk(arr[i], 10, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
+        wav_compressing_utils()->compress_smooth_amp_chunk(arr[i], 10, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
     }
 
     if (last > 0) {
@@ -60,7 +60,7 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #1", "[WavCompr
     REQUIRE(success);
 }
 
-TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #2", "[WavCompressingUtils]") {
+TEST_CASE("WavCompressingUtils::compress_smooth_amp_chunk - test #2", "[WavCompressingUtils]") {
     int16_t arr[12][10] =
             {{0, 0, 0, 0, 0, 5, 5, 5, 5, 5},
              {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -87,7 +87,7 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #2", "[WavCompr
     size_t last = 0;
 
     for (int i = 0; i < 12; i++) {
-        wav_compressing_utils()->compress_smooth_rsp_chunk(arr[i], 10, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
+        wav_compressing_utils()->compress_smooth_amp_chunk(arr[i], 10, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
     }
 
     if (last > 0) {
@@ -114,7 +114,7 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #2", "[WavCompr
     REQUIRE(success);
 }
 
-TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #3", "[WavCompressingUtils]") {
+TEST_CASE("WavCompressingUtils::compress_smooth_amp_chunk - test #3", "[WavCompressingUtils]") {
     int16_t arr[24][5] =
             {{0, 0, 0, 0, 0}, {5, 5, 5, 5, 5}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0},
              {0, 0, 5, 5, 5}, {5, 5, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 5, 5, 5},
@@ -135,7 +135,7 @@ TEST_CASE("WavCompressingUtils::compress_smooth_rsp_chunk - test #3", "[WavCompr
     size_t last = 0;
 
     for (int i = 0; i < 24; i++) {
-        wav_compressing_utils()->compress_smooth_rsp_chunk(arr[i], 5, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
+        wav_compressing_utils()->compress_smooth_amp_chunk(arr[i], 5, (i == 0), &fill, 3, 9, &prev, &last, &cdata);
     }
 
     if (last > 0) {

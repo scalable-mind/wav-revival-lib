@@ -40,7 +40,7 @@ typedef struct {
      *  size_t last = 0;
      *
      *  for (int i = 0; i < N_CHUNKS; i++) {
-     *      wav_compressing_utils()->compress_smooth_rsp_chunk(chunks[i], CHUNK_SIZE, (i == 0), &smooth_region_end,
+     *      wav_compressing_utils()->compress_smooth_amp_chunk(chunks[i], CHUNK_SIZE, (i == 0), &smooth_region_end,
      *                                                         threshold, silence, &filtered_value, &last, &cdata);
      *  }
      *
@@ -52,7 +52,7 @@ typedef struct {
      *      }
      *  }
      */
-    void (*compress_smooth_rsp_chunk)(Amp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
+    void (*compress_smooth_amp_chunk)(Amp* data, size_t data_size, bool start_chunk, bool* smooth_region_end,
                                       Amp threshold, size_t silence, Stfv* filtered_value,
                                       size_t* samples_count, CompressedData* dst);
 
