@@ -4,7 +4,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include <macros/export_start.h>
+#include "../macros/export.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /** Signal amplitude */
 typedef int16_t Amp;
@@ -17,7 +21,7 @@ typedef struct {
 
     Decibel (*get_spl)(Amp gain);
 
-    Amp (*spl_to_rsp)(Decibel gain);
+    Amp (*spl_to_amp)(Decibel gain);
 
     double (*spl_to_ratio)(Decibel gain);
 
@@ -25,6 +29,8 @@ typedef struct {
 
 MODULE_API DecibelUtils* decibel_utils();
 
-#include <macros/export_end.h>
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1,9 +1,13 @@
 #ifndef WAV_FILE_API_H
 #define WAV_FILE_API_H
 
-#include <domain/wav_file.h>
+#include "../domain/wav_file.h"
 
-#include <macros/export_start.h>
+#include "../macros/export.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct {
 
@@ -21,6 +25,8 @@ typedef struct {
 
 MODULE_API WavFileApi* wav_file_api();
 
-#include <macros/export_end.h>
+#ifdef __cplusplus
+}
+#endif
 
 #endif

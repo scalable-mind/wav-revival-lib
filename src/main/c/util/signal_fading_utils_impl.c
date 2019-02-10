@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#define MODULE_API_EXPORTS
+
 #include <api/double_array_api.h>
 #include <util/signal_fading_utils.h>
 #include <util/decibel_utils.h>
@@ -55,3 +57,5 @@ SignalFadingUtils* signal_fading_utils() {
 
     return &instance;
 }
+
+#undef MODULE_API_EXPORTS

@@ -2,6 +2,8 @@
 #include <memory.h>
 #include <stdbool.h>
 
+#define MODULE_API_EXPORTS
+
 #include <domain/uint64_array.h>
 #include <api/uint64_array_api.h>
 
@@ -85,3 +87,4 @@ Uint64ArrayApi* uint64_array_api() {
 
 #undef UINT64_ARRAY_MIN_CAPACITY
 #undef CAPACITY_INCREASE_FACTOR
+#undef MODULE_API_EXPORTS

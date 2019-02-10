@@ -15,15 +15,15 @@ TEST_CASE("DecibelUtils::get_spl - test #1", "[DecibelUtils]") {
     }
 }
 
-TEST_CASE("DecibelUtils::spl_to_rsp - test #1", "[DecibelUtils]") {
-    REQUIRE(decibel_utils()->spl_to_rsp(-3) == 23197);
-    REQUIRE(decibel_utils()->spl_to_rsp(-6) == 16422);
-    REQUIRE(decibel_utils()->spl_to_rsp(-9) == 11626);
-    REQUIRE(decibel_utils()->spl_to_rsp(-12) == 8230);
-    REQUIRE(decibel_utils()->spl_to_rsp(-15) == 5826);
-    REQUIRE(decibel_utils()->spl_to_rsp(-18) == 4125);
-    REQUIRE(decibel_utils()->spl_to_rsp(-21) == 2920);
-    REQUIRE(decibel_utils()->spl_to_rsp(-24) == 2067);
+TEST_CASE("DecibelUtils::spl_to_amp - test #1", "[DecibelUtils]") {
+    REQUIRE(decibel_utils()->spl_to_amp(-3) == 23197);
+    REQUIRE(decibel_utils()->spl_to_amp(-6) == 16422);
+    REQUIRE(decibel_utils()->spl_to_amp(-9) == 11626);
+    REQUIRE(decibel_utils()->spl_to_amp(-12) == 8230);
+    REQUIRE(decibel_utils()->spl_to_amp(-15) == 5826);
+    REQUIRE(decibel_utils()->spl_to_amp(-18) == 4125);
+    REQUIRE(decibel_utils()->spl_to_amp(-21) == 2920);
+    REQUIRE(decibel_utils()->spl_to_amp(-24) == 2067);
 }
 
 TEST_CASE("DecibelUtils::spl_to_ratio - test #1", "[DecibelUtils]") {
