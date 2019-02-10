@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include <domain/wav_header.h>
+#include "../domain/wav_header.h"
 
 #ifdef __cplusplus
 extern "C" {

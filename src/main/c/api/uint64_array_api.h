@@ -1,9 +1,9 @@
 #ifndef UINT64_ARRAY_API_H
 #define UINT64_ARRAY_API_H
 
-#include <domain/uint64_array.h>
+#include "../domain/uint64_array.h"
 
-#include <macros/export.h>
+#include "../macros/export.h"
 
 #ifdef __cplusplus
 extern "C" {

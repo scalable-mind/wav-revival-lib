@@ -3,9 +3,9 @@
 
 #include <stdbool.h>
 
-#include <domain/double_array.h>
+#include "../domain/double_array.h"
 
-#include <macros/export.h>
+#include "../macros/export.h"
 
 #ifdef __cplusplus
 extern "C" {

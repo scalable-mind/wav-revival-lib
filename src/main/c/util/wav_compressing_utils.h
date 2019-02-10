@@ -4,11 +4,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <domain/compressed_data.h>
-#include <domain/wav_file.h>
-#include <util/decibel_utils.h>
+#include "../domain/compressed_data.h"
+#include "../domain/wav_file.h"
+#include "../util/decibel_utils.h"
 
-#include <macros/export.h>
+#include "../macros/export.h"
 
 #ifdef __cplusplus
 extern "C" {

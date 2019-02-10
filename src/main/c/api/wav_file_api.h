@@ -1,9 +1,9 @@
 #ifndef WAV_FILE_API_H
 #define WAV_FILE_API_H
 
-#include <domain/wav_file.h>
+#include "../domain/wav_file.h"
 
-#include <macros/export.h>
+#include "../macros/export.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,7 +1,7 @@
 #ifndef WAV_COMPRESSED_DATA_H
 #define WAV_COMPRESSED_DATA_H
 
-#include <domain/uint64_array.h>
+#include "../domain/uint64_array.h"
 
 #ifdef __cplusplus
 extern "C" {

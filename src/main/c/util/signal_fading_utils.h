@@ -4,10 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <util/decibel_utils.h>
-#include <domain/uint64_array.h>
+#include "../util/decibel_utils.h"
+#include "../domain/uint64_array.h"
 
-#include <macros/export.h>
+#include "../macros/export.h"
 
 #ifdef __cplusplus
 extern "C" {
