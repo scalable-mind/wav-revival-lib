@@ -38,13 +38,15 @@ file(GLOB INSTALL_HEADERS_API "src/main/c/api/*.h")
 file(GLOB INSTALL_HEADERS_DOMAIN "src/main/c/domain/*.h")
 file(GLOB INSTALL_HEADERS_UTIL "src/main/c/util/*.h")
 file(GLOB INSTALL_HEADERS_MACROS "src/main/c/macros/*.h")
-
-add_executable(tests_catch2 ${API_SOURCES} ${UTIL_SOURCES} ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES}
-        ${TARGET_CATCH2_TEST})
+file(GLOB INSTALL_HEADERS_GENERAL "src/main/c/*.h")
 
 add_library(wav-revival SHARED ${API_SOURCES} ${UTIL_SOURCES})
 
+add_executable(tests_catch2 ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES}
+        ${TARGET_CATCH2_TEST})
+
 target_link_libraries(tests_catch2 Catch2::Catch2)
+target_link_libraries(tests_catch2 wav-revival)
 
 enable_testing()
 find_package(Catch2 REQUIRED)
@@ -56,7 +58,10 @@ install(FILES ${INSTALL_HEADERS_API} DESTINATION include/wav_revival/api)
 install(FILES ${INSTALL_HEADERS_DOMAIN} DESTINATION include/wav_revival/domain)
 install(FILES ${INSTALL_HEADERS_UTIL} DESTINATION include/wav_revival/util)
 install(FILES ${INSTALL_HEADERS_UTIL} DESTINATION include/wav_revival/macros)
-install(TARGETS wav-revival DESTINATION bin)
+install(FILES ${INSTALL_HEADERS_GENERAL} DESTINATION include/wav_revival)
+install(TARGETS wav-revival
+        RUNTIME DESTINATION bin
+        ARCHIVE DESTINATION lib)
 install(TARGETS tests_catch2 DESTINATION bin)
 
 include (InstallRequiredSystemLibraries)
