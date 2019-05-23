@@ -1,0 +1,82 @@
+notifications:
+  email: false
+
+branches:
+  except:
+    - ci/appveyor_integration
+
+language: cpp
+
+sudo: required
+dist: xenial
+
+os:
+  - linux
+  - osx
+  - windows
+
+addons:
+  apt:
+    packages:
+      - "python3"
+      - "python3-pip"
+      - "python3-setuptools"
+
+compiler:
+  - gcc
+  - clang
+
+env:
+  - TARGET_CPU=amd64 BUILD_CONFIGURATION=Debug
+  - TARGET_CPU=amd64 BUILD_CONFIGURATION=Release
+  - TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
+  - TARGET_CPU=x86 BUILD_CONFIGURATION=Release
+
+matrix:
+  exclude:
+    - os:       osx
+      compiler: gcc
+
+    - os:  osx
+      env: TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
+
+    - os:  osx
+      env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
+
+    - os: windows
+      compiler: clang
+
+#    - os: windows
+#      env: TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
+#
+#    - os: windows
+#      env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
+
+install:
+  - source ci/travis/install-$TRAVIS_OS_NAME.sh
+
+
+before_script:
+  - source ci/travis/configure-$TRAVIS_OS_NAME.sh
+
+script:
+  - source ci/travis/build-$TRAVIS_OS_NAME.sh
+
+after_success:
+  - cd ./build
+  - ctest --output-on-failure
+  - if [[ "$TRAVIS_OS_NAME" != "windows" && "$BUILD_CONFIGURATION" == "Release" ]]; then cpack; fi
+
+deploy:
+  - provider: releases
+    api_key:
+      secure: Py2ruuY7Jf1lPJgQS413tqHiXmW6Hxck51HnOg0dUCU4TL04mQmJpKkH81/VrjcA1OHYAVhbMDelh6M7ytqgn7c5A59C6Lv5pDMDD1r9eViRMZQYnGxhsmgxU7ehUsXLyxBdxsjMFQicOe1EAjxVV6m6ChSJbOxDS/HqQwyoxwYI/x9pctfDsvU7gHR2iUz7IIk2BdDL52f6zFOxEd0cE6cp4U6cmzLZYC2k30XRR+qMOWjXZy7QGoFZLDB07DjPUpsQD7OByYybhpRMU9U6ANaWWELtnmfoRdvUjioMYl0MK//A1mB+3luEJSNNanknrcMW2U4bS6kH1SSSfkd0OKf4FXMOU1mUwvwzFy9EIBcrhxxXZ17acgiEeDtL3eraD8Yg0nYcyW5WuTrEUhK9ZcHT8HX+wi34Tv66C6edG4XrcOFfFgmYwxcn0de8Eqpp1ObHlOkUj4apFQYqwEuQ0VRHGk42JVp4nN3FPEew623R5aCPAt0tSvpa1QDRqJdeUiHX47e4X0Sdwltec+7eegu9ovl3wxaA9knUcUEAwFiv0p0ZOIZWKemDI0gswMA21SD96jW52ASxLh/gdR1e5iuc9SZDbQ1QulZEBAbdzYW1P/BE/WOoURXLHJhwmaBSPZA71CgMdtiErhPIH83q7GDPGL3HZeVkTEFCbg6M3J0=
+    file_glob: true
+    file:
+      - $TRAVIS_BUILD_DIR/build/wav_revival*.sh
+      - $TRAVIS_BUILD_DIR/build/wav_revival*.tar.gz
+    skip_cleanup: true
+    on:
+      tags: true
+      branch: master
+      condition: ($TRAVIS_OS_NAME = "linux" || $TRAVIS_OS_NAME = "osx") && $BUILD_CONFIGURATION = "Release"
