@@ -1,6 +1,7 @@
 #ifndef WAV_REVIVAL_H
 #define WAV_REVIVAL_H
 
+#include <stdint.h>
 #include "../macros/export.h"
 
 #ifdef __cplusplus
@@ -11,9 +12,9 @@ MODULE_API void voice_over(
         const char* orig_path,
         const char* voice_path,
         const char* output_path,
-        size_t attack,
-        size_t release,
-        size_t silence,
+        double attack,
+        double release,
+        double silence,
         double threshold,
         double gain);
 

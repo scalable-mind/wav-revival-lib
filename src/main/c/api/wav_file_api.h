@@ -19,7 +19,7 @@ typedef struct {
 
     size_t (*read_next_chunk)(WavFile* self, void* buffer);
 
-    size_t (*write_next_chunk)(WavFile* self, void* buffer);
+    size_t (*write_next_chunk)(WavFile* self, void* buffer, size_t size);
 
     void (*refresh)(WavFile* self);
 
