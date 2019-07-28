@@ -17,11 +17,11 @@ void voice_over(
         const char* orig_path,
         const char* voice_path,
         const char* output_path,
-        Amp threshold,
-        size_t silence,
         size_t attack,
         size_t release,
-        Decibel gain) {
+        size_t silence,
+        double threshold,
+        double gain) {
 
     WavFile* orig_file = wav_file_api()->init(orig_path, "r", BUFFER_SIZE);
     WavFile* voice_file = wav_file_api()->init(voice_path, "r", BUFFER_SIZE);
@@ -45,8 +45,10 @@ void voice_over(
         bool start_chunk = true;
 
         while ((chunk_size = wav_file_api()->read_next_chunk(voice_file, buffer)) != 0) {
-            wav_compressing_utils()->compress_smooth_amp_chunk(buffer, chunk_size, start_chunk, &smooth_region_end,
-                                                               threshold, silence, &filtered_value, &last, &cdata);
+            wav_compressing_utils()->compress_smooth_amp_chunk(
+                    buffer, chunk_size, start_chunk, &smooth_region_end,
+                    decibel_utils()->spl_to_amp(threshold), silence,
+                    &filtered_value, &last, &cdata);
             if (start_chunk) {
                 start_chunk = false;
             }
