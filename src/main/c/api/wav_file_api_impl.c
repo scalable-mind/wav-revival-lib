@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <errno.h>
+#include "string.h"
 
 #define MODULE_API_EXPORTS
 
@@ -17,7 +18,9 @@ static WavFile* init(const char* file_path, const char* file_io_mode, size_t buf
 #else
     wav_file->file = fopen(file_path, file_io_mode);
 #endif
-    fread(&(wav_file->header), sizeof(WavHeader), 1, wav_file->file);
+    if (strcmp(file_io_mode, "r") == 0) {
+        fread(&(wav_file->header), sizeof(WavHeader), 1, wav_file->file);
+    }
     return wav_file;
 }
 
@@ -36,8 +39,16 @@ static size_t write_next_chunk(WavFile* self, void* buffer) {
     return fwrite(buffer, sample_size, self->buffer_size, self->file);
 }
 
+static size_t write_header(WavFile* self, WavHeader* header) {
+    return fwrite(header, sizeof(WavHeader), 1, self->file);
+}
+
+static void refresh(WavFile* self) {
+    fseek(self->file, sizeof(WavHeader), SEEK_SET);
+}
+
 WavFileApi* wav_file_api() {
-    static WavFileApi instance = { ._is_initialized=false };
+    static WavFileApi instance = {._is_initialized=false};
 
     if (!instance._is_initialized) {
         instance._is_initialized = true;
@@ -45,6 +56,8 @@ WavFileApi* wav_file_api() {
         instance.del = del;
         instance.read_next_chunk = read_next_chunk;
         instance.write_next_chunk = write_next_chunk;
+        instance.refresh = refresh;
+        instance.write_header = write_header;
     }
 
     return &instance;

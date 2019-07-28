@@ -31,16 +31,18 @@ set(TARGET_CATCH2_TEST src/test/c/test_catch2.cpp)
 # sources
 aux_source_directory(src/main/c/api/ API_SOURCES)
 aux_source_directory(src/main/c/util/ UTIL_SOURCES)
+aux_source_directory(src/main/c/export/ EXPORT_SOURCES)
 aux_source_directory(src/test/c/api/ API_TEST_SOURCES)
 aux_source_directory(src/test/c/util/ UTIL_TEST_SOURCES)
 
+file(GLOB INSTALL_HEADERS_EXPORT "src/main/c/export/*.h")
 file(GLOB INSTALL_HEADERS_API "src/main/c/api/*.h")
 file(GLOB INSTALL_HEADERS_DOMAIN "src/main/c/domain/*.h")
 file(GLOB INSTALL_HEADERS_UTIL "src/main/c/util/*.h")
 file(GLOB INSTALL_HEADERS_MACROS "src/main/c/macros/*.h")
 file(GLOB INSTALL_HEADERS_GENERAL "src/main/c/*.h")
 
-add_library(wav-revival SHARED ${API_SOURCES} ${UTIL_SOURCES})
+add_library(wav-revival SHARED ${EXPORT_SOURCES} ${API_SOURCES} ${UTIL_SOURCES})
 
 add_executable(tests_catch2 ${API_TEST_SOURCES} ${UTIL_TEST_SOURCES}
         ${TARGET_CATCH2_TEST})
@@ -54,11 +56,12 @@ message(STATUS ${Catch2_DIR})
 include(Catch)
 catch_discover_tests(tests_catch2)
 
-install(FILES ${INSTALL_HEADERS_API} DESTINATION include/wav_revival/api)
-install(FILES ${INSTALL_HEADERS_DOMAIN} DESTINATION include/wav_revival/domain)
-install(FILES ${INSTALL_HEADERS_UTIL} DESTINATION include/wav_revival/util)
-install(FILES ${INSTALL_HEADERS_UTIL} DESTINATION include/wav_revival/macros)
-install(FILES ${INSTALL_HEADERS_GENERAL} DESTINATION include/wav_revival)
+install(FILES ${INSTALL_HEADERS_EXPORT} DESTINATION include/wav_revival/export)
+#install(FILES ${INSTALL_HEADERS_API} DESTINATION include/wav_revival/api)
+#install(FILES ${INSTALL_HEADERS_DOMAIN} DESTINATION include/wav_revival/domain)
+#install(FILES ${INSTALL_HEADERS_UTIL} DESTINATION include/wav_revival/util)
+install(FILES ${INSTALL_HEADERS_MACROS} DESTINATION include/wav_revival/macros)
+#install(FILES ${INSTALL_HEADERS_GENERAL} DESTINATION include/wav_revival)
 install(TARGETS wav-revival
         RUNTIME DESTINATION bin
         ARCHIVE DESTINATION lib)

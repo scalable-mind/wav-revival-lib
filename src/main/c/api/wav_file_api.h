@@ -21,6 +21,10 @@ typedef struct {
 
     size_t (*write_next_chunk)(WavFile* self, void* buffer);
 
+    void (*refresh)(WavFile* self);
+
+    size_t (*write_header)(WavFile* self, WavHeader* header);
+
 } WavFileApi;
 
 MODULE_API WavFileApi* wav_file_api();
