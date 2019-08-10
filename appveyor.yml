@@ -45,6 +45,7 @@ test_script:
 
 artifacts:
   - path: .\build\wav_revival*.exe
+    name: wav_revival
 
 deploy:
   description: '$(APPVEYOR_REPO_TAG_NAME)'
@@ -53,7 +54,7 @@ deploy:
   auth_token:
     secure: lPTwJZonVghxfyykM+o25f795+fspLgVC+qVOpC77WjWr5vDjlZ5bMGw5H8v9VHU
 
-  artifact: .\build\wav_revival*.exe
+  artifact: wav_revival
   force_update: true
 
   on:
