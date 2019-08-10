@@ -2,6 +2,7 @@
 
 set CMAKE_GENERATOR=Ninja
 
+if "%1" == "" goto :finalize
 if /i "%1" == "x86" goto :x86
 if /i "%1" == "i386" goto :x86
 if /i "%1" == "amd64" goto :amd64
@@ -14,10 +15,12 @@ exit -1
 :x86
 set TARGET_CPU=x86
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+goto :finalize
 
 :amd64
 set TARGET_CPU=amd64
 call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+goto :finalize
 
 :finalize
 if "%TARGET_CPU%" == "" goto :amd64
