@@ -1,0 +1,60 @@
+# Build worker image (VM template)
+image: Visual Studio 2017
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+
+# set clone depth
+clone_depth: 1
+
+matrix:
+  fast_finish: true
+
+platform:
+  - x64
+  - x86
+
+configuration:
+  - Debug
+  - Release
+
+install:
+  - ps: choco install conan -y
+  - ps: choco install ninja -y
+
+before_build:
+  - refreshenv
+  - call ci\appveyor\configure.bat %PLATFORM%
+
+build_script:
+  - cmake --build ./build
+
+after_build:
+  - cd build
+  - cpack
+
+test_script:
+  - ctest -T Test
+  - ps: |
+      $XSLInputElement = New-Object System.Xml.Xsl.XslCompiledTransform
+      $XSLInputElement.Load("https://raw.githubusercontent.com/rpavlik/jenkins-ctest-plugin/master/ctest-to-junit.xsl")
+      $XSLInputElement.Transform((Resolve-Path .\Testing\**\Test.xml), (Join-Path (Resolve-Path .) "ctest-to-junit-results.xml"))
+      $wc = New-Object 'System.Net.WebClient'
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\ctest-to-junit-results.xml))
+
+artifacts:
+  - path: .\build\wav_revival*.exe
+
+deploy:
+  description: '$(APPVEYOR_REPO_TAG_NAME)'
+  provider: GitHub
+
+  auth_token:
+    secure: lPTwJZonVghxfyykM+o25f795+fspLgVC+qVOpC77WjWr5vDjlZ5bMGw5H8v9VHU
+
+  artifact: .\build\wav_revival*.exe
+  force_update: true
+
+  on:
+    appveyor_repo_tag: true
