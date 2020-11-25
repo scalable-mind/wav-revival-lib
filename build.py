@@ -1,6 +1,7 @@
-import os
 import argparse
+import os
 import subprocess
+
 
 def configure(gen, arch):
     configure_command = ["cmake", "-S", ".", "-B", "build"]

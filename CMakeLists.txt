@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(wav_revival_lib)
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 set(wav_revival_VERSION_MAJOR 0)
 set(wav_revival_VERSION_MINOR 1)
@@ -39,7 +39,6 @@ conan_cmake_run(CONANFILE conanfile.txt
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
-
 
 include_directories(src/main/c)
 include_directories(src/test/c)

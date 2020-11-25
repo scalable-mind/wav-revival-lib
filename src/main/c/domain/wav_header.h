@@ -1,14 +1,9 @@
-#ifndef WAV_HEADER_H
-#define WAV_HEADER_H
+#pragma once
 
-#include <stdint.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <cstdint>
 
 // NOTE: we use standard PCM RIFF WAV header with 44 bytes size.
-typedef struct {
+struct WavHeader {
 
     char chunk_id[4];
 
@@ -36,10 +31,4 @@ typedef struct {
 
     uint32_t data_size;
 
-} WavHeader;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+};
